@@ -79,7 +79,7 @@ namespace ormpp {
 		}
 
 		template<typename T, typename... Args >
-		constexpr bool create_datatable(Args&&... args) {
+		bool create_datatable(Args&&... args) {
 			//            std::string droptb = "DROP TABLE IF EXISTS ";
 			//            droptb += iguana::get_name<T>();
 			//            if (mysql_query(con_, droptb.data())) {
@@ -97,7 +97,7 @@ namespace ormpp {
 		}
 
 		template<typename T, typename... Args>
-		constexpr int insert(const std::vector<T>& t, Args&&... args) {
+		int insert(const std::vector<T>& t, Args&&... args) {
 			auto name = iguana::get_name<T>().data();
 			std::string sql = auto_key_map_[name].empty() ? generate_insert_sql<T>(false) : generate_auto_insert_sql<T>(auto_key_map_, false);
 
@@ -105,14 +105,14 @@ namespace ormpp {
 		}
 
 		template<typename T, typename... Args>
-		constexpr int update(const std::vector<T>& t, Args&&... args) {
+		int update(const std::vector<T>& t, Args&&... args) {
 			std::string sql = generate_insert_sql<T>(true);
 
 			return insert_impl(sql, t, std::forward<Args>(args)...);
 		}
 
 		template<typename T, typename... Args>
-		constexpr int insert(const T& t, Args&&... args) {
+		int insert(const T& t, Args&&... args) {
 			//insert into person values(?, ?, ?);
 			auto name = iguana::get_name<T>().data();
 			std::string sql = auto_key_map_[name].empty() ? generate_insert_sql<T>(false) : generate_auto_insert_sql<T>(auto_key_map_, false);
@@ -121,7 +121,7 @@ namespace ormpp {
 		}
 
 		template<typename T, typename... Args>
-		constexpr int update(const T& t, Args&&... args) {
+		int update(const T& t, Args&&... args) {
 			std::string sql = generate_insert_sql<T>(true);
 			return insert_impl(sql, t, std::forward<Args>(args)...);
 		}
@@ -143,7 +143,7 @@ namespace ormpp {
 
 		//for tuple and string with args...
 		template<typename T, typename Arg, typename... Args>
-		constexpr std::enable_if_t<!iguana::is_reflection_v<T>, std::vector<T>> query(const Arg& s, Args&&... args) {
+		std::enable_if_t<!iguana::is_reflection_v<T>, std::vector<T>> query(const Arg& s, Args&&... args) {
 			static_assert(iguana::is_tuple<T>::value);
 			constexpr auto SIZE = std::tuple_size_v<T>;
 
@@ -277,7 +277,7 @@ namespace ormpp {
 
 		//if there is a sql error, how to tell the user? throw exception?
 		template<typename T, typename... Args>
-		constexpr std::enable_if_t<iguana::is_reflection_v<T>, std::vector<T>> query(Args&&... args) {
+		std::enable_if_t<iguana::is_reflection_v<T>, std::vector<T>> query(Args&&... args) {
 			std::string sql = generate_query_sql<T>(args...);
 			constexpr auto SIZE = iguana::get_value<T>();
 
@@ -563,7 +563,7 @@ namespace ormpp {
 		};
 
 		template<typename T, typename... Args>
-		constexpr int insert_impl(const std::string& sql, const T& t, Args&&... args) {
+		int insert_impl(const std::string& sql, const T& t, Args&&... args) {
 			stmt_ = mysql_stmt_init(con_);
 			if (!stmt_)
 				return INT_MIN;
@@ -581,7 +581,7 @@ namespace ormpp {
 		}
 
 		template<typename T, typename... Args>
-		constexpr int insert_impl(const std::string& sql, const std::vector<T>& t, Args&&... args) {
+		int insert_impl(const std::string& sql, const std::vector<T>& t, Args&&... args) {
 			stmt_ = mysql_stmt_init(con_);
 			if (!stmt_)
 				return INT_MIN;

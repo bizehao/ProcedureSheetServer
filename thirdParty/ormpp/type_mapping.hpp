@@ -50,7 +50,7 @@ namespace ormpp{
 		inline auto type_to_name(identity<std::string>) noexcept { return "TEXT"sv; }
 		template<size_t N>
 		inline constexpr auto type_to_name(identity<std::array<char, N>>) noexcept {
-			std::string s = "varchar(" + std::to_string(N) + ")";
+            std::string_view s = "varchar(" + std::to_string(N) + ")";
 			return s;
 		}
     }

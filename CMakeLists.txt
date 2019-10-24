@@ -5,12 +5,19 @@ cmake_minimum_required (VERSION 3.8)
 project(ProcedureSheetServer)
 set(CMAKE_CXX_STANDARD 17)
 
+#set(CMAKE_BUILD_TYPE Release)
+#关闭编译器优化
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+   message("==========")
+   add_compile_options(-fno-elide-constructors)#-Wall
+endif ()
+
 add_definitions(-DORMPP_ENABLE_MYSQL)
 
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "ProcedureSheetServer.cpp" "ProcedureSheetServer.h")
+add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
 
 target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
 target_link_directories (ProcedureSheetServer PRIVATE "libs")
