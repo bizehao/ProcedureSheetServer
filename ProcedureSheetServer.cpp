@@ -7,6 +7,7 @@
 #include "ormpp/dbng.hpp"
 #include "ormpp/mysql.hpp"
 #include <memory>
+#include <thread>
 
 
 struct person {
@@ -23,7 +24,7 @@ int main() {
 	std::vector<person> v{ p1, p2 };
 
 	ormpp::dbng<ormpp::mysql> mysql;
-	mysql.connect("127.0.0.1", "root", "bzh960912", "testcpp");
+	mysql.connect("127.0.0.1", "root", "bzh960912", "test");
 	mysql.create_datatable<person>();
 
 	mysql.insert(p);
@@ -49,4 +50,9 @@ int main() {
 		}
 	}
 	mysql.commit();*/
+
+	std::thread thread([](){
+	    std::cout << "测试" << std::endl;
+	});
+    thread.join();
 }

@@ -129,7 +129,6 @@ namespace ormpp {
 		template<typename T, typename... Args>
 		constexpr bool delete_records(Args&&... where_conditon) {
 			auto sql = generate_delete_sql<T>(std::forward<Args>(where_conditon)...);
-			std::cout << "·¢Éú´íÎó: " << sql.data() << std::endl;
 			if (mysql_query(con_, sql.data())) {
 				fprintf(stderr, "%s\n", mysql_error(con_));
 				return false;
