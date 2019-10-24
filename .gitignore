@@ -31,5 +31,7 @@
 *.out
 *.app
 
+#不需要上传的文件或目录
 /.vs
 /out
+CMakeSettings.json
