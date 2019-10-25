@@ -7,10 +7,10 @@
 void UserController::exec(cinatra::http_server &server) {
     server.set_http_handler<cinatra::GET>("/hello1", [this](cinatra::request& req, cinatra::response& res) {
         this->hello1(req,res);
-    });
+    },log_t{});
     server.set_http_handler<cinatra::GET>("/hello2", [this](cinatra::request& req, cinatra::response& res) {
         this->hello2(req,res);
-    });
+    },log_t{});
 }
 
 void UserController::hello1(cinatra::request &req, cinatra::response &res) {
@@ -32,7 +32,7 @@ void UserController::hello1(cinatra::request &req, cinatra::response &res) {
     res.set_status_and_content(cinatra::status_type::ok, std::move(mm));
 }
 
-constexpr void UserController::hello2(cinatra::request &req, cinatra::response &res) {
+void UserController::hello2(cinatra::request &req, cinatra::response &res) {
     int x = 100;
     constexpr auto mm = R"({
     "animals":{
@@ -48,5 +48,5 @@ constexpr void UserController::hello2(cinatra::request &req, cinatra::response &
         ]
     }
 })";
-    res.set_status_and_content(cinatra::status_type::ok, std::move(mm));
+    res.set_status_and_content(cinatra::status_type::ok, mm);
 }
