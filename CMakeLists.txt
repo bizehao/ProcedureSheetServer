@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 project(ProcedureSheetServer)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 #set(CMAKE_BUILD_TYPE Release)
 #关闭编译器优化
@@ -17,7 +17,7 @@ add_definitions(-DORMPP_ENABLE_MYSQL)
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
+add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h" thirdParty/cinatra/use_json.hpp src/controller/UserController.cpp src/controller/UserController.h)
 
 target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
 target_link_directories (ProcedureSheetServer PRIVATE "libs")
@@ -32,7 +32,7 @@ if(WIN32)
 endif()
 
 if (UNIX)
-   target_link_libraries(ProcedureSheetServer PRIVATE mysqlclient pthread)
+   target_link_libraries(ProcedureSheetServer PRIVATE mysqlclient pthread uuid stdc++fs)
 endif ()
 
 # TODO: 如有需要，请添加测试并安装目标。
