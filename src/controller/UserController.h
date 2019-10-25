@@ -12,7 +12,7 @@ public:
     void exec(cinatra::http_server &server);
 private:
     void hello1(cinatra::request& req, cinatra::response& res);
-    constexpr void hello2(cinatra::request& req, cinatra::response& res);
+    void hello2(cinatra::request& req, cinatra::response& res);
 };
 
 
