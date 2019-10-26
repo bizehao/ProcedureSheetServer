@@ -17,7 +17,7 @@ add_definitions(-DORMPP_ENABLE_MYSQL)
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h" thirdParty/cinatra/use_json.hpp src/controller/UserController.cpp src/controller/UserController.h src/utils/section.h)
+add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h" thirdParty/cinatra/use_json.hpp src/controller/UserController.cpp src/controller/UserController.h src/utils/section.h src/utils/currency_net.hpp)
 
 target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
 target_link_directories (ProcedureSheetServer PRIVATE "libs")
