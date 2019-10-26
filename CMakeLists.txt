@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 project(ProcedureSheetServer)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 #set(CMAKE_BUILD_TYPE Release)
 #关闭编译器优化
