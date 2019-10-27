@@ -25,3 +25,4 @@ template<typename O, typename ...T>
 void execNet(O &o, cinatra::http_server &server, T ...t) {
     joinNet<sizeof...(t) - 1>(o, server, std::make_tuple(t...));
 }
+
