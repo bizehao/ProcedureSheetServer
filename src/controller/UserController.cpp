@@ -5,16 +5,22 @@
 #include "UserController.h"
 
 void UserController::exec(cinatra::http_server& server) {
-	execNet(*this,
-		server,
-		SV("/hello1", &UserController::hello1),
-		SV("/hello2", &UserController::hello2)
-	);
+    execNet(*this,
+            server,
+            SV("/hello2", &UserController::hello2, "a", "b")//,
+            //SV("/hello2", &UserController::hello2)
+    );
 }
 
 void UserController::hello1(cinatra::request& req, cinatra::response& res) {
-	int x = 100;
-	std::string mm = R"({
+
+    auto a = req.get_query_value("a");
+    auto b = req.get_aspect_data();
+    auto c = req.get_form_url_map();
+    std::cout << "a: " << a << std::endl;
+    //queries
+    /*int x = 100;
+    std::string mm = R"({
     "animals":{
         "dog":[
             {
@@ -26,22 +32,11 @@ void UserController::hello1(cinatra::request& req, cinatra::response& res) {
                 "age":null
             }
         ]
-    }})";
-	res.set_status_and_content(cinatra::status_type::ok, std::move(mm));
+    }})";*/
+    res.set_status_and_content(cinatra::status_type::ok, "hello1");
 }
 
-void UserController::hello2(cinatra::request& req, cinatra::response& res) {
-
-	auto a = req.get_query_value("a");
-	auto b = req.get_query_value("b");
-
-	auto x = req.get_query_value(0);
-
-	std::cout << "a: " << a << std::endl;
-
-	std::cout << "b: " << b << std::endl;
-
-	std::cout << "x: " << x << std::endl;
-
-	res.set_status_and_content(cinatra::status_type::ok, "test success");
+void UserController::hello2(int a, int b) {
+    std::cout << "a: " << a << std::endl;
+    std::cout << "b: " << b << std::endl;
 }
