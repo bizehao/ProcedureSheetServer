@@ -35,6 +35,7 @@ int main() {
     server.listen("0.0.0.0", "8080");
     UserController userController;
     userController.exec(server);
+
     server.run();
 
     /*auto aa = &Test::say;

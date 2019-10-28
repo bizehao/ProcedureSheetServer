@@ -36,16 +36,6 @@ using member_args_t = type_method_t<member_args<T>>;
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-/*template<template<typename index> typename Fun, typename Array, std::size_t... I>
-auto a2t_impl(const Array& a, std::index_sequence<I...>){
-
-};*/
-
-template<typename F>
-constexpr size_t pp(F f) {
-    return f();
-}
-
 template<size_t index, typename T>
 class hangArray_lambda {
 public:

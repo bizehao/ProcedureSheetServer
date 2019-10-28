@@ -30,14 +30,14 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
 		joinNet<size - 1>(o, server, vTuple);
 	}
 	auto to = std::get<size>(vTuple);
-	constexpr size_t ss = std::tuple_size_v<decltype( to )>; //参数长度
 	std::cout << std::get<0>(to) << std::endl;
 	server.set_http_handler<cinatra::GET>(std::get<0>(to),
-		[&o, to, ss](cinatra::request& req, cinatra::response& res) {
+		[&o, to](cinatra::request& req, cinatra::response& res) {
 			auto xx = std::get<1>(to); //函数值
 			constexpr size_t args_size = std::tuple_size_v<member_args_t<decltype( xx )>>;
 			std::cout << args_size << std::endl;
 
+			constexpr auto ss = std::tuple_size_v<decltype( to )>; //参数长度
 			std::cout << "参数长度" << ss << std::endl;
 			std::array<std::string, ss - 2> array; //参数数组
 			getNextValue<0, ss>(array, to);
