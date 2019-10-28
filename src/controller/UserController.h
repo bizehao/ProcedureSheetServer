@@ -11,15 +11,16 @@
 #include <functional>
 #include "../utils/currency_net.hpp"
 
-#define SV(name, server) std::make_tuple(name,server)
+//第一个请求头  第二个请求的方法地址  剩余的为参数字段名
+#define SV(...) std::make_tuple(__VA_ARGS__)
 
 class UserController {
 public:
-    void exec(cinatra::http_server &server);
+    void exec(cinatra::http_server& server);
 
 private:
 
-    void hello1(cinatra::request &req, cinatra::response &res);
+    void hello1(cinatra::request& req, cinatra::response& res);
 
-    void hello2(cinatra::request &req, cinatra::response &res);
+    void hello2(int a, int b);
 };
