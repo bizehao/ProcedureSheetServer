@@ -22,5 +22,5 @@ private:
 
     void hello1(cinatra::request& req, cinatra::response& res);
 
-    void hello2(int a, int b);
+    std::string hello2(int& a, int& b, cinatra::request* req,cinatra::response* res);
 };

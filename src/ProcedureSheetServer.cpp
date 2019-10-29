@@ -60,6 +60,18 @@ int main() {
         std::cout << a << std::endl;
         return a + 100;
     });*/
+    /*int a = 50;
+    int b = 100;
+    char c = 'c';
+    auto tup = std::make_tuple(a, b, c, &a);
+    std::cout << *std::get<3>(tup) << std::endl;
+    std::apply([](int a,int b, char c, const int* d){
+        std::cout << "a: " << a << std::endl;
+        std::cout << "b: " << b << std::endl;
+        std::cout << "c: " << c << std::endl;
+        std::cout << "d: " << *d << std::endl;
+    },tup);*/
+
 
 
 }
