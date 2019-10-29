@@ -62,9 +62,9 @@ public:
 
     decltype(auto) operator()(const std::string& v) const {
         //std::cout << "参数列表名字: " << v << std::endl;
-        if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<index, T>>, cinatra::request*>) {
+        if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<index, T>>, cinatra::request>) {
             return &req;
-        } else if constexpr(std::is_same_v<std::decay_t<std::tuple_element_t<index, T>>, cinatra::response*>) {
+        } else if constexpr(std::is_same_v<std::decay_t<std::tuple_element_t<index, T>>, cinatra::response>) {
             return &res;
         } else {
             return req.get_query_value<std::remove_reference_t<std::tuple_element_t<index, T>>>(v);

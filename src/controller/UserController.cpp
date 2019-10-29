@@ -7,7 +7,7 @@
 void UserController::exec(cinatra::http_server& server) {
     execNet(*this,
             server,
-            SV("/hello2", &UserController::hello2, "a", "b", "req", "res")
+            SV("/hello2", &UserController::hello2, "req", "res") // "a", "b",
     );
 }
 
@@ -35,12 +35,13 @@ void UserController::hello1(cinatra::request& req, cinatra::response& res) {
     res.set_status_and_content(cinatra::status_type::ok, "hello1");
 }
 
-std::string UserController::hello2(int& a, int& b, cinatra::request* req,cinatra::response* res) {
-    auto v = req->get_query_value("a");
+//int& a, int& b,
+std::string UserController::hello2(cinatra::request& req,cinatra::response& res) {
+    auto v = req.get_query_value("a");
     std::cout << v << std::endl;
     std::cout << "进入hello2" << std::endl;
-    std::cout << "a: " << a << std::endl;
-    std::cout << "b: " << b << std::endl;
+    //std::cout << "a: " << a << std::endl;
+    //std::cout << "b: " << b << std::endl;
     //res->set_status_and_content(cinatra::status_type::ok, "hello2");
     return "我是hello2";
 }

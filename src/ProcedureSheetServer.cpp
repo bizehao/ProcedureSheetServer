@@ -28,15 +28,34 @@ auto a2t(const std::array<T, N>& a, Fun fun) {
     return a2t_impl(a, std::forward<Fun>(fun), Indices{});
 }*/
 
+template<typename _Fn, typename _Tuple, size_t... _Idx>
+constexpr decltype(auto)
+__apply_impls(_Fn&& __f, _Tuple&& __t, std::index_sequence<_Idx...>) {
+    constexpr bool  a = std::is_pointer_v<std::tuple_element_t<0, std::tuple<int *, int *, int *>>>;
+    return std::__invoke(std::forward<_Fn>(__f),
+            //(*std::get<_Idx>(std::forward<_Tuple>(__t)) > 100 ? *std::get<_Idx>(std::forward<_Tuple>(__t)):*std::get<_Idx>(std::forward<_Tuple>(__t)))...);
+            (std::is_pointer_v<std::tuple_element_t<_Idx, std::tuple<int *, int *, int *>>> ? *std::get<_Idx>(std::forward<_Tuple>(__t)):std::get<_Idx>(std::forward<_Tuple>(__t)))...);
+}
+
+template<typename _Fn, typename _Tuple>
+constexpr decltype(auto)
+applys(_Fn&& __f, _Tuple&& __t) {
+    using _Indices
+    = std::make_index_sequence<std::tuple_size_v<std::remove_reference_t<_Tuple>>>;
+    return __apply_impls(std::forward<_Fn>(__f),
+                             std::forward<_Tuple>(__t),
+                             _Indices{});
+}
+
 int main() {
     //启动web服务
-    unsigned int max_thread_num = std::thread::hardware_concurrency();
+    /*unsigned int max_thread_num = std::thread::hardware_concurrency();
     cinatra::http_server server(max_thread_num);
     server.listen("0.0.0.0", "8080");
     UserController userController;
     userController.exec(server);
 
-    server.run();
+    server.run();*/
 
     /*auto aa = &Test::say;
 
@@ -60,18 +79,16 @@ int main() {
         std::cout << a << std::endl;
         return a + 100;
     });*/
-    /*int a = 50;
+    int a = 50;
     int b = 100;
-    char c = 'c';
-    auto tup = std::make_tuple(a, b, c, &a);
-    std::cout << *std::get<3>(tup) << std::endl;
-    std::apply([](int a,int b, char c, const int* d){
+    int c = 200;
+    auto tup = std::make_tuple(&a, &b, &c);
+
+    applys([](int a, int b, int c) {
         std::cout << "a: " << a << std::endl;
         std::cout << "b: " << b << std::endl;
         std::cout << "c: " << c << std::endl;
-        std::cout << "d: " << *d << std::endl;
-    },tup);*/
-
+    }, tup);
 
 
 }

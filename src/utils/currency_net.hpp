@@ -12,16 +12,20 @@
 
 template<size_t ...N, typename Fun, typename Ob, typename Tup>
 static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, Tup&& tup, cinatra::response& res) {
+    /*constexpr bool iiis = std::is_pointer_v<std::tuple_element_t<0, std::remove_reference_t<Tup>>>;
     if constexpr (std::is_same_v<member_return_t<Fun>, void>) {
-        std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), std::get<N>(std::forward<Tup>(tup))...);
+        std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob),
+                    iiis ? *std::get<N>(std::forward<Tup>(tup)) : std::get<N>(std::forward<Tup>(tup))...);
     } else {
-        auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), std::get<N>(std::forward<Tup>(tup))...);
+        auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob),
+                                        iiis ? *std::get<N>(std::forward<Tup>(tup)) : std::get<N>(
+                                                std::forward<Tup>(tup))...);
         if constexpr(std::is_same_v<std::decay_t<decltype(return_value)>, std::string>) {
             res.set_status_and_content(cinatra::status_type::ok, std::move(return_value));
-        } else{
+        } else {
             res.set_status_and_content(cinatra::status_type::ok, std::move(std::to_string(return_value)));
         }
-    }
+    }*/
 }
 
 //元祖大小 数组大小 下标值 0  5  3
