@@ -11,7 +11,7 @@ void UserController::exec(cinatra::http_server& server) {
 	);
 }
 
-void UserController::hello1(cinatra::request& req, cinatra::response& res) {
+std::string UserController::hello1(cinatra::request& req, cinatra::response& res) {
 
 	auto a = req.get_query_value("a");
 	auto b = req.get_aspect_data();

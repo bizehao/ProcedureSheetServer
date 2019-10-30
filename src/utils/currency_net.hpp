@@ -10,6 +10,9 @@
 #include "reflex.hpp"
 #include <array>
 
+//第一个请求头  第二个请求的方法地址 剩余的为参数字段名
+#define SV(...) std::make_tuple(__VA_ARGS__)
+
 template<typename T>
 struct type_return {
 	constexpr static auto out(T t) {

@@ -4,6 +4,7 @@
 
 #ifndef IGUANA_REFLECTION_HPP
 #define IGUANA_REFLECTION_HPP
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -21,8 +22,8 @@
 #include "string_stream.hpp"
 
 namespace iguana::detail {
-	/******************************************/
-	/* arg list expand macro, now support 120 args */
+    /******************************************/
+    /* arg list expand macro, now support 120 args */
 #define MAKE_ARG_LIST_1(op, arg, ...)   op(arg)
 #define MAKE_ARG_LIST_2(op, arg, ...)   op(arg), MARCO_EXPAND(MAKE_ARG_LIST_1(op, __VA_ARGS__))
 #define MAKE_ARG_LIST_3(op, arg, ...)   op(arg), MARCO_EXPAND(MAKE_ARG_LIST_2(op, __VA_ARGS__))
@@ -343,133 +344,133 @@ namespace iguana {
 #define REFLECTION(STRUCT_NAME, ...) \
 MAKE_META_DATA(STRUCT_NAME, GET_ARG_COUNT(__VA_ARGS__), __VA_ARGS__)
 
-	template<typename T>
-	using Reflect_members = decltype( iguana_reflect_members(std::declval<T>()) );
+    template<typename T>
+    using Reflect_members = decltype(iguana_reflect_members(std::declval<T>()));
 
-	template <typename T, typename = void>
-	struct is_reflection : std::false_type {
-	};
+    template<typename T, typename = void>
+    struct is_reflection : std::false_type {
+    };
 
-	template <typename T>
-	struct is_reflection<T, std::void_t<typename Reflect_members<T>::type>> : std::true_type {
-	};
+    template<typename T>
+    struct is_reflection<T, std::void_t<typename Reflect_members<T>::type>> : std::true_type {
+    };
 
-	template<typename T>
-	inline constexpr bool is_reflection_v = is_reflection<T>::value;
+    template<typename T>
+    inline constexpr bool is_reflection_v = is_reflection<T>::value;
 
-	template<size_t I, typename T>
-	constexpr decltype( auto ) get(T&& t) {
-		using M = decltype( iguana_reflect_members(std::forward<T>(t)) );
-		using U = decltype( std::forward<T>(t).*( std::get<I>(M::apply_impl()) ) );
+    template<size_t I, typename T>
+    constexpr decltype(auto) get(T&& t) {
+        using M = decltype(iguana_reflect_members(std::forward<T>(t)));
+        using U = decltype(std::forward<T>(t).*(std::get<I>(M::apply_impl())));
 
-		if constexpr (std::is_array_v<U>) {
-			auto s = std::forward<T>(t).*( std::get<I>(M::apply_impl()) );
-			std::array<char, sizeof(U)> arr;
-			memcpy(arr.data(), s, arr.size());
-			return arr;
-		} else
-			return std::forward<T>(t).*( std::get<I>(M::apply_impl()) );
-	}
+        if constexpr (std::is_array_v<U>) {
+            auto s = std::forward<T>(t).*(std::get<I>(M::apply_impl()));
+            std::array<char, sizeof(U)> arr;
+            memcpy(arr.data(), s, arr.size());
+            return arr;
+        } else
+            return std::forward<T>(t).*(std::get<I>(M::apply_impl()));
+    }
 
-	template <typename T, size_t ... Is>
-	constexpr auto get_impl(T const& t, std::index_sequence<Is...>) {
-		return std::make_tuple(get<Is>(t)...);
-	}
+    template<typename T, size_t ... Is>
+    constexpr auto get_impl(T const& t, std::index_sequence<Is...>) {
+        return std::make_tuple(get<Is>(t)...);
+    }
 
-	template <typename T, size_t ... Is>
-	constexpr auto get_impl(T& t, std::index_sequence<Is...>) {
-		return std::make_tuple(std::ref(get<Is>(t))...);
-	}
+    template<typename T, size_t ... Is>
+    constexpr auto get_impl(T& t, std::index_sequence<Is...>) {
+        return std::make_tuple(std::ref(get<Is>(t))...);
+    }
 
-	template <typename T>
-	constexpr auto get(T const& t) {
-		using M = decltype( iguana_reflect_members(t) );
-		return get_impl(t, std::make_index_sequence<M::value()>{});
-	}
+    template<typename T>
+    constexpr auto get(T const& t) {
+        using M = decltype(iguana_reflect_members(t));
+        return get_impl(t, std::make_index_sequence<M::value()>{});
+    }
 
-	template <typename T>
-	constexpr auto get_ref(T& t) {
-		using M = decltype( iguana_reflect_members(t) );
-		return get_impl(t, std::make_index_sequence<M::value()>{});
-	}
+    template<typename T>
+    constexpr auto get_ref(T& t) {
+        using M = decltype(iguana_reflect_members(t));
+        return get_impl(t, std::make_index_sequence<M::value()>{});
+    }
 
-	template<typename T, size_t  I>
-	constexpr const std::string_view get_name() {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		static_assert( I < M::value(), "out of range" );
-		return M::arr()[I];
-	}
+    template<typename T, size_t I>
+    constexpr const std::string_view get_name() {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        static_assert(I < M::value(), "out of range");
+        return M::arr()[I];
+    }
 
-	template<typename T>
-	constexpr const std::string_view get_name(size_t i) {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		//		static_assert(I<M::value(), "out of range");
-		return M::arr()[i];
-	}
+    template<typename T>
+    constexpr const std::string_view get_name(size_t i) {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        //		static_assert(I<M::value(), "out of range");
+        return M::arr()[i];
+    }
 
-	template<typename T>
-	constexpr const std::string_view get_name() {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		return M::name();
-	}
+    template<typename T>
+    constexpr const std::string_view get_name() {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        return M::name();
+    }
 
-	template<typename T>
-	constexpr std::enable_if_t<is_reflection<T>::value, size_t> get_value() {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		return M::value();
-	}
+    template<typename T>
+    constexpr std::enable_if_t<is_reflection<T>::value, size_t> get_value() {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        return M::value();
+    }
 
-	template<typename T>
-	constexpr std::enable_if_t<!is_reflection<T>::value, size_t> get_value() {
-		return 1;
-	}
+    template<typename T>
+    constexpr std::enable_if_t<!is_reflection<T>::value, size_t> get_value() {
+        return 1;
+    }
 
-	template<typename T>
-	constexpr auto get_array() {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		return M::arr();
-	}
+    template<typename T>
+    constexpr auto get_array() {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        return M::arr();
+    }
 
-	template<typename T>
-	constexpr auto get_index(std::string_view name) {
-		using M = decltype( iguana_reflect_members(std::declval<T>()) );
-		constexpr auto arr = M::arr();
+    template<typename T>
+    constexpr auto get_index(std::string_view name) {
+        using M = decltype(iguana_reflect_members(std::declval<T>()));
+        constexpr auto arr = M::arr();
 
-		auto it = std::find_if(arr.begin(), arr.end(), [name](auto str) {
-			return ( str == name );
-			});
+        auto it = std::find_if(arr.begin(), arr.end(), [name](auto str) {
+            return (str == name);
+        });
 
-		return std::distance(arr.begin(), it);
-	}
+        return std::distance(arr.begin(), it);
+    }
 
-	template <class Tuple, class F, std::size_t...Is>
-	void tuple_switch(std::size_t i, Tuple&& t, F&& f, std::index_sequence<Is...>) {
-		( ( i == Is && ( ( std::forward<F>(f)( std::get<Is>(std::forward<Tuple>(t)) ) ), false ) ), ... );
-	}
+    template<class Tuple, class F, std::size_t...Is>
+    void tuple_switch(std::size_t i, Tuple&& t, F&& f, std::index_sequence<Is...>) {
+        ((i == Is && ((std::forward<F>(f)(std::get<Is>(std::forward<Tuple>(t)))), false)), ... );
+    }
 
-	//-------------------------------------------------------------------------------------------------------------//
-	//-------------------------------------------------------------------------------------------------------------//
-	template <typename... Args, typename F, std::size_t... Idx>
-	constexpr void for_each(std::tuple<Args...>& t, F&& f, std::index_sequence<Idx...>) {
-		( std::forward<F>(f)( std::get<Idx>(t), std::integral_constant<size_t, Idx>{} ), ... );
-	}
+    //-------------------------------------------------------------------------------------------------------------//
+    //-------------------------------------------------------------------------------------------------------------//
+    template<typename... Args, typename F, std::size_t... Idx>
+    constexpr void for_each(std::tuple<Args...>& t, F&& f, std::index_sequence<Idx...>) {
+        ( std::forward<F>(f)(std::get<Idx>(t), std::integral_constant<size_t, Idx>{}), ... );
+    }
 
-	template <typename... Args, typename F, std::size_t... Idx>
-	constexpr void for_each(const std::tuple<Args...>& t, F&& f, std::index_sequence<Idx...>) {
-		( std::forward<F>(f)( std::get<Idx>(t), std::integral_constant<size_t, Idx>{} ), ... );
-	}
+    template<typename... Args, typename F, std::size_t... Idx>
+    constexpr void for_each(const std::tuple<Args...>& t, F&& f, std::index_sequence<Idx...>) {
+        ( std::forward<F>(f)(std::get<Idx>(t), std::integral_constant<size_t, Idx>{}), ... );
+    }
 
-	template<typename T, typename F>
-	constexpr std::enable_if_t<is_reflection<T>::value> for_each(T&& t, F&& f) {
-		using M = decltype( iguana_reflect_members(std::forward<T>(t)) );
-		for_each(M::apply_impl(), std::forward<F>(f), std::make_index_sequence<M::value()>{});
-	}
+    template<typename T, typename F>
+    constexpr std::enable_if_t<is_reflection<T>::value> for_each(T&& t, F&& f) {
+        using M = decltype(iguana_reflect_members(std::forward<T>(t)));
+        for_each(M::apply_impl(), std::forward<F>(f), std::make_index_sequence<M::value()>{});
+    }
 
-	template<typename T, typename F>
-	constexpr std::enable_if_t<is_tuple<std::decay_t<T>>::value> for_each(T&& t, F&& f) {
-		//using M = decltype(iguana_reflect_members(std::forward<T>(t)));
-		constexpr const size_t SIZE = std::tuple_size_v<std::decay_t<T>>;
-		for_each(std::forward<T>(t), std::forward<F>(f), std::make_index_sequence<SIZE>{});
-	}
+    template<typename T, typename F>
+    constexpr std::enable_if_t<is_tuple<std::decay_t<T>>::value> for_each(T&& t, F&& f) {
+        //using M = decltype(iguana_reflect_members(std::forward<T>(t)));
+        constexpr const size_t SIZE = std::tuple_size_v<std::decay_t<T>>;
+        for_each(std::forward<T>(t), std::forward<F>(f), std::make_index_sequence<SIZE>{});
+    }
 }
 #endif //IGUANA_REFLECTION_HPP
