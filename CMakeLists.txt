@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 #关闭编译器优化
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    message("==========")
-   add_compile_options(-fno-elide-constructors)# -Wall
+   #add_compile_options(-fno-elide-constructors)# -Wall
 endif ()
 
 add_definitions(-DORMPP_ENABLE_MYSQL)

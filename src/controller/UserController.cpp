@@ -35,8 +35,8 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 	return "11";
 }
 
-//int& a, int& b,
-std::string UserController::hello2(int a) {
+//http://localhost:8080/hello2?a=58
+std::string UserController::hello2(int& a) {
 	std::cout << "进入hello2: " << a << std::endl;
     auto pp = userMapper.getOccupations();
     for (auto& item : pp) {

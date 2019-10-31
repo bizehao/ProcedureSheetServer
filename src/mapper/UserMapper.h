@@ -8,16 +8,15 @@
 #include "../entity/UserEntity.h"
 #include "ormpp/dbng.hpp"
 #include "ormpp/mysql.hpp"
+#include "../base/BaseMapper.hpp"
 
 //关于用户的sql操作
-class UserMapper {
+class UserMapper : BaseMapper {
 public:
-    explicit UserMapper(ormpp::dbng<ormpp::mysql>& mysql):mysql(mysql){}
+    explicit UserMapper(ormpp::dbng<ormpp::mysql>& mysql) : BaseMapper(mysql) {}
 
     std::vector<occupation> getOccupations();
 
-private:
-    ormpp::dbng<ormpp::mysql>& mysql;
 };
 
 

@@ -15,6 +15,31 @@
 #define SV(...) std::make_tuple(__VA_ARGS__)
 
 template<typename T>
+struct HandleArray {
+    HandleArray(cinatra::request& req, cinatra::response& res) : req(req), res(res) {}
+
+    template<typename Item, typename Index>
+    auto operator()(Item item, Index index) {
+        constexpr auto idx = decltype( index )::value;
+
+        if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<idx, T>>, cinatra::request>) {
+            return &req;
+        } else if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<idx, T>>, cinatra::response>) {
+            return &res;
+        } else {
+            using tt = std::remove_reference_t<std::tuple_element_t<idx, T>>;
+            auto v = std::make_unique<decltype(req.get_query_value<tt>(
+                    item))>(req.get_query_value<tt>(item));
+            return std::move(v);
+        }
+    }
+
+private:
+    cinatra::request& req;
+    cinatra::response& res;
+};
+
+template<typename T>
 struct type_return {
     constexpr static auto out(T t) {
         return t;
@@ -94,21 +119,7 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
                                                   std::array<std::string, args_size> array; //参数数组
                                                   getNextValue<0, ss>(array, to);
                                                   /*auto tup = a2t<hangArray_lambda, member_args_t<decltype( fun )>>(array, req, res);*/
-
-                                                  auto tup = a2t(array, [&req, &res](auto item, auto index) {
-                                                      constexpr auto idx = decltype( index )::value;
-
-                                                      if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<idx, member_args_t<decltype(fun)>>>, cinatra::request>) {
-                                                          return &req;
-                                                      } else if constexpr (std::is_same_v<std::decay_t<std::tuple_element_t<idx, member_args_t<decltype(fun)>>>, cinatra::response>) {
-                                                          return &res;
-                                                      } else {
-                                                          using tt = std::remove_reference_t<std::tuple_element_t<idx, member_args_t<decltype(fun)>>>;
-                                                          auto v = std::make_unique<decltype(req.get_query_value<tt>(
-                                                                  item))>(req.get_query_value<tt>(item));
-                                                          return std::move(v);
-                                                      }
-                                                  });
+                                                  auto tup = a2t(array, HandleArray<member_args_t<decltype(fun)>>(req, res));
                                                   invokeOfTuple(std::make_index_sequence<args_size>(),
                                                                 fun,
                                                                 std::forward<O>(o),
