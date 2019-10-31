@@ -58,7 +58,7 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
 		joinNet<size - 1>(o, server, vTuple);
 	}
 	auto to = std::get<size>(vTuple);
-	std::cout << "请求头" << std::get<size>(to) << std::endl;
+	std::cout << "http: " << std::get<size>(to) << std::endl;
 	server.set_http_handler<cinatra::GET>(std::get<0>(to),
 		[&o, to](cinatra::request& req, cinatra::response& res) {
 			auto fun = std::get<1>(to); //函数值

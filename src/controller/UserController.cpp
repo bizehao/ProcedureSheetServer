@@ -32,7 +32,7 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 			}
 		]
 	}})";*/
-	res.set_status_and_content(cinatra::status_type::ok, "hello1");
+	return "11";
 }
 
 //int& a, int& b,
