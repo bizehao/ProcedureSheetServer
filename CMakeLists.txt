@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 #关闭编译器优化
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    message("==========")
-   add_compile_options(-fno-elide-constructors)#-Wall
+   add_compile_options(-fno-elide-constructors)# -Wall
 endif ()
 
 add_definitions(-DORMPP_ENABLE_MYSQL)
@@ -17,7 +17,7 @@ add_definitions(-DORMPP_ENABLE_MYSQL)
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" src/utils/currency_sql.hpp)
+add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" src/mapper/UserMapper.cpp src/mapper/UserMapper.h src/entity/UserEntity.h src/utils/currency_sql.hpp src/base/BaseController.hpp)
 target_sources(ProcedureSheetServer PRIVATE "src/controller/UserController.cpp")
 
 target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
@@ -37,3 +37,5 @@ if (UNIX)
 endif ()
 
 # TODO: 如有需要，请添加测试并安装目标。
+
+add_executable(test1 src/test/test1.cpp)

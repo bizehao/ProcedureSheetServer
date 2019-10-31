@@ -12,24 +12,36 @@
 
 namespace bzh {
 
-    //自定义sql查询
-    /*template<typename T, typename SQL>
-    std::vector<T> customizeQuery(ormpp::dbng<ormpp::mysql>& mysql, SQL&& sql) {
-        constexpr auto SIZE = iguana::get_value<T>();
-        T t;
-        iguana::for_each(t, [&mp, &t](auto item, auto i) {
-            using U = std::remove_reference_t<decltype(std::declval<T>().*item)>;
-            if constexpr (std::is_same_v<std::string, U>) {
-                auto& vec = mp[decltype(i)::value];
-                t.*item = std::string(&vec[0], strlen(vec.data()));
-            }
-            else if constexpr(is_char_array_v<U>) {
-                auto& vec = mp[decltype(i)::value];
-                memcpy(t.*item, vec.data(), vec.size());
-            }
-        });
+    template<typename T>
+    struct remove_pointer_type;
 
-        result = mysql.query<std::tuple<>>(sql);
-    }*/
+    template<typename ...Type, typename ...Name>
+    struct remove_pointer_type<std::tuple<Type Name:: * ...>> {
+        static constexpr auto value = 500;
+        using type = std::tuple<Type...>;
+    };
+
+    template<typename T>
+    constexpr auto getEntityForTup(T&& t) {
+        using M = decltype( iguana_reflect_members(std::forward<T>(t)) );
+        return M::apply_impl();
+    }
+
+    //自定义sql查询 类型字段映射
+    template<typename T, typename SQL>
+    std::vector<T> customizeQuery(ormpp::dbng<ormpp::mysql>& mysql, SQL&& sql) {
+        using DefType = typename remove_pointer_type<decltype( bzh::getEntityForTup(T()) )>::type;
+        auto result = mysql.query<DefType>(sql);
+        std::vector<T> datas;
+        for (auto& itemResult : result) {
+            T t;
+            iguana::for_each(t, [&t, &itemResult](auto item, auto i) {
+                constexpr auto Idx = decltype( i )::value;
+                t.*item = std::get<Idx>(itemResult);
+            });
+            datas.push_back(t);
+        }
+        return std::move(datas);
+    }
 }
 

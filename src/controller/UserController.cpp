@@ -4,10 +4,10 @@
 
 #include "UserController.h"
 
-void UserController::exec(cinatra::http_server& server) {
+void UserController::exec() {
 	execNet(*this,
 		server,
-		SV("/hello2", &UserController::hello2, "req", "res", "a", "b")
+		SV("/hello2", &UserController::hello2, "a")
 	);
 }
 
@@ -32,16 +32,15 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 			}
 		]
 	}})";*/
-	res.set_status_and_content(cinatra::status_type::ok, "hello1");
+	return "11";
 }
 
 //int& a, int& b,
-std::string UserController::hello2(cinatra::request& req, cinatra::response& res, int& a, int& b) {
-	auto v = req.get_query_value("a");
-	std::cout << v << std::endl;
-	std::cout << "进入hello2" << std::endl;
-	//std::cout << "a: " << a << std::endl;
-	//std::cout << "b: " << b << std::endl;
-	//res->set_status_and_content(cinatra::status_type::ok, "hello2");
+std::string UserController::hello2(int a) {
+	std::cout << "进入hello2: " << a << std::endl;
+    auto pp = userMapper.getOccupations();
+    for (auto& item : pp) {
+        std::cout << "id: " << item.id << "类型: " << item.occupation_name << std::endl;
+    }
 	return "好吧hello2";
 }
