@@ -7,7 +7,7 @@
 void UserController::exec() {
 	execNet(*this,
 		server,
-		SV("/hello2", &UserController::hello2)
+		SV("/hello2", &UserController::hello2, "a")
 	);
 }
 
@@ -36,8 +36,8 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 }
 
 //int& a, int& b,
-std::string UserController::hello2() {
-	std::cout << "进入hello2" << std::endl;
+std::string UserController::hello2(int a) {
+	std::cout << "进入hello2: " << a << std::endl;
     auto pp = userMapper.getOccupations();
     for (auto& item : pp) {
         std::cout << "id: " << item.id << "类型: " << item.occupation_name << std::endl;

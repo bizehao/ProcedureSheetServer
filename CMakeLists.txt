@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 #关闭编译器优化
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    message("==========")
-   add_compile_options(-fno-elide-constructors)#-Wall
+   add_compile_options(-fno-elide-constructors)# -Wall
 endif ()
 
 add_definitions(-DORMPP_ENABLE_MYSQL)
@@ -37,3 +37,5 @@ if (UNIX)
 endif ()
 
 # TODO: 如有需要，请添加测试并安装目标。
+
+add_executable(test1 src/test/test1.cpp)

@@ -25,7 +25,7 @@ private:
     std::string hello1(cinatra::request& req, cinatra::response& res);
 
     //int& a, int& b,
-    std::string hello2();
+    std::string hello2(int a);
 
     cinatra::http_server& server;
     UserMapper& userMapper;
