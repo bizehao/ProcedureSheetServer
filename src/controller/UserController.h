@@ -9,16 +9,24 @@
 #include "cinatra.hpp"
 #include "../utils/section.h"
 #include <functional>
+#include <ormpp/mysql.hpp>
+#include <ormpp/dbng.hpp>
 #include "../utils/currency_net.hpp"
+#include "../mapper/UserMapper.h"
 
 class UserController {
 public:
-	void exec(cinatra::http_server& server);
+    UserController(cinatra::http_server& server, UserMapper& userMapper) : server(server), userMapper(userMapper) {}
+
+    void exec();
 
 private:
 
     std::string hello1(cinatra::request& req, cinatra::response& res);
 
-	//int& a, int& b,
-	std::string hello2(cinatra::request& req, cinatra::response& res, int& a, int& b);
+    //int& a, int& b,
+    std::string hello2();
+
+    cinatra::http_server& server;
+    UserMapper& userMapper;
 };
