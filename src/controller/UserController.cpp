@@ -33,7 +33,7 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 
 //http://localhost:8080/hello2?a=58
 std::string UserController::login(int& name, int& password) {
-	std::cout << "½øÈëhello2: " << std::endl;
+	std::cout << "è¿›å…¥hello2: " << std::endl;
     //auto pp = userMapper.getUserByName();
-	return "ºÃ°Éhello2";
+	return "å¥½å§hello2";
 }

@@ -11,7 +11,7 @@
 #include <array>
 #include <memory>
 
-//µÚÒ»¸öÇëÇóÍ·  µÚ¶ş¸öÇëÇóµÄ·½·¨µØÖ· Ê£ÓàµÄÎª²ÎÊı×Ö¶ÎÃû
+//ç¬¬ä¸€ä¸ªè¯·æ±‚å¤´  ç¬¬äºŒä¸ªè¯·æ±‚çš„æ–¹æ³•åœ°å€ å‰©ä½™çš„ä¸ºå‚æ•°å­—æ®µå
 #define SV(...) std::make_tuple(__VA_ARGS__)
 
 template<typename T>
@@ -83,7 +83,7 @@ static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, 
     }
 }
 
-//Ôª×æ´óĞ¡ Êı×é´óĞ¡ ÏÂ±êÖµ 0  5  3
+//å…ƒç¥–å¤§å° æ•°ç»„å¤§å° ä¸‹æ ‡å€¼ 0  5  3
 template<size_t N, size_t CN, size_t AN, typename Tup>
 static auto getNextValue(std::array<std::string, AN>& array, Tup&& tup) {
     if constexpr (N < AN - 1) {
@@ -101,14 +101,14 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
     std::cout << "http: " << std::get<size>(to) << std::endl;
     server.set_http_handler<cinatra::GET>(std::get<0>(to),
                                           [&o, to](cinatra::request& req, cinatra::response& res) {
-                                              auto fun = std::get<1>(to); //º¯ÊıÖµ
-                                              //²ÎÊıÀàĞÍÊıÁ¿
+                                              auto fun = std::get<1>(to); //å‡½æ•°å€¼
+                                              //å‚æ•°ç±»å‹æ•°é‡
                                               constexpr size_t args_size = std::tuple_size_v<member_args_t<decltype(fun)>>;
-                                              //std::cout << "½ÓÊÕ²ÎÊı³¤¶È: " << args_size << std::endl;
+                                              //std::cout << "æ¥æ”¶å‚æ•°é•¿åº¦: " << args_size << std::endl;
 
-                                              //ºêÀïµÄ²ÎÊıÊıÁ¿
+                                              //å®é‡Œçš„å‚æ•°æ•°é‡
                                               constexpr size_t ss = std::tuple_size_v<decltype(to)>;
-                                              //std::cout << "ºêÀï²ÎÊı³¤¶È: " << ss << std::endl;
+                                              //std::cout << "å®é‡Œå‚æ•°é•¿åº¦: " << ss << std::endl;
                                               if constexpr (args_size == 0) {
                                                   invokeOfTuple(std::make_index_sequence<args_size>(),
                                                                 fun,
@@ -116,7 +116,7 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
                                                                 res
                                                   );
                                               } else {
-                                                  std::array<std::string, args_size> array; //²ÎÊıÊı×é
+                                                  std::array<std::string, args_size> array; //å‚æ•°æ•°ç»„
                                                   getNextValue<0, ss>(array, to);
                                                   /*auto tup = a2t<hangArray_lambda, member_args_t<decltype( fun )>>(array, req, res);*/
                                                   auto tup = a2t(array, HandleArray<member_args_t<decltype(fun)>>(req, res));
