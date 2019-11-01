@@ -15,7 +15,8 @@ class UserMapper : BaseMapper {
 public:
     explicit UserMapper(ormpp::dbng<ormpp::mysql>& mysql) : BaseMapper(mysql) {}
 
-    std::vector<occupation> getOccupations();
+    //根据用户名获取用户
+    std::vector<User> getUserByName();
 
 };
 

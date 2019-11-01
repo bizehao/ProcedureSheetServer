@@ -8,7 +8,7 @@ int main() {
 	system("chcp 65001");
 #endif
     std::ifstream read("../resources/application.json");
-    nlohmann::json in = nlohmann::json::parse(read);;
+    nlohmann::json in = nlohmann::json::parse(read);
     //连接mysql
     ormpp::dbng<ormpp::mysql> mysql;
     mysql.connect(in["address"].get<std::string>().data(),

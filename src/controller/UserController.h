@@ -21,5 +21,5 @@ private:
 
     std::string hello1(cinatra::request& req, cinatra::response& res);
 
-    std::string hello2(int& a);
+    std::string login(std::string& name,std::string& password);
 };
