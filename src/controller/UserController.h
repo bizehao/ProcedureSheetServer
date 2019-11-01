@@ -6,27 +6,20 @@
 
 #include <iostream>
 #include <tuple>
-#include "cinatra.hpp"
 #include "../utils/section.h"
-#include <functional>
-#include <ormpp/mysql.hpp>
-#include <ormpp/dbng.hpp>
 #include "../utils/currency_net.hpp"
 #include "../mapper/UserMapper.h"
+#include "../base/BaseController.hpp"
 
-class UserController {
+class UserController : BaseController {
 public:
-    UserController(cinatra::http_server& server, UserMapper& userMapper) : server(server), userMapper(userMapper) {}
+    UserController(cinatra::http_server& server, UserMapper& userMapper) : BaseController(server, userMapper) {}
 
-    void exec();
+    void exec() override;
 
 private:
 
     std::string hello1(cinatra::request& req, cinatra::response& res);
 
-    //int& a, int& b,
-    std::string hello2(int a);
-
-    cinatra::http_server& server;
-    UserMapper& userMapper;
+    std::string hello2(int& a);
 };
