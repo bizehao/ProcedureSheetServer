@@ -1,4 +1,4 @@
-// ProcedureSheetServer.cpp: ¶¨ÒåÓ¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+// ProcedureSheetServer.cpp: å®šä¹‰åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "ProcedureSheetServer.h"
@@ -12,7 +12,7 @@ int main() {
     
     nlohmann::json in = nlohmann::json::parse(read);
 
-    //Á¬½Ómysql
+    //è¿æ¥mysql
     ormpp::dbng<ormpp::mysql> mysql;
     mysql.connect(in["address"].get<std::string>().data(),
                   in["database"]["user"].get<std::string>().data(),
@@ -20,7 +20,7 @@ int main() {
                   in["database"]["db"].get<std::string>().data()
                   );
 
-    //Æô¶¯web·şÎñ
+    //å¯åŠ¨webæœåŠ¡
     unsigned int max_thread_num = std::thread::hardware_concurrency();
     cinatra::http_server server(max_thread_num);
     //server.listen("127.0.0.1", "8080");
