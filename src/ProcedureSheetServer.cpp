@@ -1,15 +1,18 @@
-// ProcedureSheetServer.cpp: å®šä¹‰åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
+// ProcedureSheetServer.cpp: ¶¨ÒåÓ¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
 //
 
 #include "ProcedureSheetServer.h"
 
 int main() {
 #ifdef _WIN32
-	system("chcp 65001");
+	std::ifstream read("C:\\Users\\24221\\source\\repos\\ProcedureSheetServer\\resources\\application.json");
+#else
+	std::ifstream read("../resources/application.json");
 #endif
-    std::ifstream read("../resources/application.json");
+    
     nlohmann::json in = nlohmann::json::parse(read);
-    //è¿æ¥mysql
+
+    //Á¬½Ómysql
     ormpp::dbng<ormpp::mysql> mysql;
     mysql.connect(in["address"].get<std::string>().data(),
                   in["database"]["user"].get<std::string>().data(),
@@ -17,7 +20,7 @@ int main() {
                   in["database"]["db"].get<std::string>().data()
                   );
 
-    //å¯åŠ¨webæœåŠ¡
+    //Æô¶¯web·şÎñ
     unsigned int max_thread_num = std::thread::hardware_concurrency();
     cinatra::http_server server(max_thread_num);
     //server.listen("127.0.0.1", "8080");

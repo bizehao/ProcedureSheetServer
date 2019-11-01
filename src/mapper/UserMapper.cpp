@@ -5,6 +5,6 @@
 #include "UserMapper.h"
 #include "../utils/currency_sql.hpp"
 
-std::vector<occupation> UserMapper::getOccupations() {
-    return bzh::customizeQuery<occupation>(mysql, "select * from occupation");
+std::vector<Occupation> UserMapper::getUserByName() {
+    return bzh::customizeQuery<Occupation>(mysql, "select * from occupation");
 }

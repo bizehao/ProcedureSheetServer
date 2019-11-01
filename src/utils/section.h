@@ -8,7 +8,7 @@
 
 using namespace cinatra;
 
-//æ—¥å¿—åˆ‡é¢
+//ÈÕÖ¾ÇĞÃæ
 struct log_t {
 	bool before(request& req, response& res) {
 		std::cout << "before log" << std::endl;

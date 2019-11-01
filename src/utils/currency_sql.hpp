@@ -27,7 +27,7 @@ namespace bzh {
         return M::apply_impl();
     }
 
-    //鑷畾涔塻ql鏌ヨ 绫诲瀷瀛楁鏄犲皠
+    //自定义sql查询 类型字段映射
     template<typename T, typename SQL>
     std::vector<T> customizeQuery(ormpp::dbng<ormpp::mysql>& mysql, SQL&& sql) {
         using DefType = typename remove_pointer_type<decltype( bzh::getEntityForTup(T()) )>::type;

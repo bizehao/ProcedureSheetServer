@@ -26,8 +26,8 @@ DROP TABLE IF EXISTS `language_type`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `language_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `language_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'è¯­è¨€åç§°',
-  `order_quantity` int(11) NOT NULL COMMENT 'è¿™ä¸ªè¯­è¨€çš„ç´¯è®¡è®¢å•æ•°é‡',
+  `language_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ÓïÑÔÃû³Æ',
+  `order_quantity` int(11) NOT NULL COMMENT 'Õâ¸öÓïÑÔµÄÀÛ¼Æ¶©µ¥ÊıÁ¿',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `occupation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `occupation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `occupation_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'èŒä¸šåç§°',
+  `occupation_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Ö°ÒµÃû³Æ',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -61,7 +61,7 @@ CREATE TABLE `occupation` (
 
 LOCK TABLES `occupation` WRITE;
 /*!40000 ALTER TABLE `occupation` DISABLE KEYS */;
-INSERT INTO `occupation` VALUES (1,'ç¨‹åºå‘˜'),(2,'å®¢æˆ·');
+INSERT INTO `occupation` VALUES (1,'³ÌĞòÔ±'),(2,'¿Í»§');
 /*!40000 ALTER TABLE `occupation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,14 +97,14 @@ DROP TABLE IF EXISTS `orders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'å•çš„æ ‡é¢˜',
-  `demand` double NOT NULL COMMENT 'å•çš„è¯¦ç»†ä¿¡æ¯æè¿°',
-  `file_path` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'å•çš„é™„åŠ æ–‡ä»¶ å›¾ç‰‡ excelç­‰',
-  `budget` double NOT NULL COMMENT 'è¿™ä¸ªå•çš„é¢„ç®—',
-  `order_status_id` int(11) NOT NULL COMMENT 'å½“å‰è¿™ä¸ªå•çš„çŠ¶æ€',
-  `language_type_id` int(11) NOT NULL COMMENT 'è¿™ä¸ªå•çš„è¯­è¨€ç±»å‹',
-  `plane_user_id` int(11) NOT NULL COMMENT 'ä¸‹å•çš„ç”¨æˆ·çš„id',
-  `receipt_user_id` int(11) DEFAULT NULL COMMENT 'æ¥å•çš„ç”¨æˆ·çš„id',
+  `title` varchar(45) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'µ¥µÄ±êÌâ',
+  `demand` double NOT NULL COMMENT 'µ¥µÄÏêÏ¸ĞÅÏ¢ÃèÊö',
+  `file_path` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'µ¥µÄ¸½¼ÓÎÄ¼ş Í¼Æ¬ excelµÈ',
+  `budget` double NOT NULL COMMENT 'Õâ¸öµ¥µÄÔ¤Ëã',
+  `order_status_id` int(11) NOT NULL COMMENT 'µ±Ç°Õâ¸öµ¥µÄ×´Ì¬',
+  `language_type_id` int(11) NOT NULL COMMENT 'Õâ¸öµ¥µÄÓïÑÔÀàĞÍ',
+  `plane_user_id` int(11) NOT NULL COMMENT 'ÏÂµ¥µÄÓÃ»§µÄid',
+  `receipt_user_id` int(11) DEFAULT NULL COMMENT '½Óµ¥µÄÓÃ»§µÄid',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -132,8 +132,8 @@ CREATE TABLE `users` (
   `email` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` int(11) NOT NULL,
   `phone` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `lately_date` datetime DEFAULT NULL COMMENT 'æœ€è¿‘ä¸€æ¬¡çš„ç™»å½•æ—¶é—´',
-  `ip_address` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'æœ€è¿‘ä¸€æ¬¡ä½¿ç”¨çš„ipåœ°å€',
+  `lately_date` datetime DEFAULT NULL COMMENT '×î½üÒ»´ÎµÄµÇÂ¼Ê±¼ä',
+  `ip_address` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '×î½üÒ»´ÎÊ¹ÓÃµÄipµØÖ·',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

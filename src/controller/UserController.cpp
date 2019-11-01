@@ -7,16 +7,12 @@
 void UserController::exec() {
 	execNet(*this,
 		server,
-		SV("/hello2", &UserController::hello2, "a")
+		SV("/hello2", &UserController::login, "name", "password")
 	);
 }
 
 std::string UserController::hello1(cinatra::request& req, cinatra::response& res) {
 
-	auto a = req.get_query_value("a");
-	auto b = req.get_aspect_data();
-	auto c = req.get_form_url_map();
-	std::cout << "a: " << a << std::endl;
 	//queries
 	/*int x = 100;
 	std::string mm = R"({
@@ -36,11 +32,8 @@ std::string UserController::hello1(cinatra::request& req, cinatra::response& res
 }
 
 //http://localhost:8080/hello2?a=58
-std::string UserController::hello2(int& a) {
-	std::cout << "è¿›å…¥hello2: " << a << std::endl;
-    auto pp = userMapper.getOccupations();
-    for (auto& item : pp) {
-        std::cout << "id: " << item.id << "ç±»åž‹: " << item.occupation_name << std::endl;
-    }
-	return "å¥½å§hello2";
+std::string UserController::login(int& name, int& password) {
+	std::cout << "½øÈëhello2: " << std::endl;
+    //auto pp = userMapper.getUserByName();
+	return "ºÃ°Éhello2";
 }

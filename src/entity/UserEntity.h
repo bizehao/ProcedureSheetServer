@@ -7,21 +7,21 @@
 #include <string>
 #include "ormpp/reflection.hpp"
 
-//ç”¨æˆ·ç±»å‹è¡¨
+//ÓÃ»§ÀàĞÍ±í
 struct Occupation {
     int id;
     std::string occupation_name;
 };
 REFLECTION(Occupation, id, occupation_name)
 
-struct User {
-    int id; //id
-    std::string username; //ç”¨æˆ·å
-    std::string password; //å¯†ç 
-    std::string email; //é‚®ç®±åœ°å€
-    int type; //ç”¨æˆ·ç±»å‹
-    std::string phone; //æ‰‹æœºå·
-    long latelyDate; //æœ€è¿‘ä¸€æ¬¡ç™»å½•æ—¥æœŸ
-    std::string ipAddress; //ipåœ°å€
-};
-REFLECTION(User, id, username, password, email, type, phone, latelyDate, ipAddress)
+//struct User {
+//    int id; //id
+//    std::string username; //ÓÃ»§Ãû
+//    std::string password; //ÃÜÂë
+//    std::string email; //ÓÊÏäµØÖ·
+//    int type; //ÓÃ»§ÀàĞÍ
+//    std::string phone; //ÊÖ»úºÅ
+//    long latelyDate; //×î½üÒ»´ÎµÇÂ¼ÈÕÆÚ
+//    std::string ipAddress; //ipµØÖ·
+//};
+//REFLECTION(User, id, username, password, email, type, phone, latelyDate, ipAddress)

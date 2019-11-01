@@ -1,6 +1,6 @@
 //
 // Created by bizehao on 2019/10/25.
-// ç”¨æˆ·çš„controller
+// ÓÃ»§µÄcontroller
 
 #pragma once
 
@@ -21,5 +21,5 @@ private:
 
     std::string hello1(cinatra::request& req, cinatra::response& res);
 
-    std::string login(std::string& name,std::string& password);
+    std::string login(int& name,int& password);
 };
