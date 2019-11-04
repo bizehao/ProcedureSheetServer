@@ -37,3 +37,4 @@
 CMakeSettings.json
 /cmake-build-debug
 .idea
+/build

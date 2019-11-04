@@ -17,7 +17,6 @@ namespace bzh {
 
     template<typename ...Type, typename ...Name>
     struct remove_pointer_type<std::tuple<Type Name:: * ...>> {
-        static constexpr auto value = 500;
         using type = std::tuple<Type...>;
     };
 

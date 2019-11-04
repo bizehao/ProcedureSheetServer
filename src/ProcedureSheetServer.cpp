@@ -1,10 +1,11 @@
-// ProcedureSheetServer.cpp: 定义应用程序的入口点。
+// ProcedureSheetServer.cpp:
 //
 
 #include "ProcedureSheetServer.h"
 
 int main() {
 #ifdef _WIN32
+	//system("chcp 65001");
 	std::ifstream read("C:\\Users\\24221\\source\\repos\\ProcedureSheetServer\\resources\\application.json");
 #else
 	std::ifstream read("../resources/application.json");
@@ -12,7 +13,7 @@ int main() {
     
     nlohmann::json in = nlohmann::json::parse(read);
 
-    //连接mysql
+    //connect mysql
     ormpp::dbng<ormpp::mysql> mysql;
     mysql.connect(in["address"].get<std::string>().data(),
                   in["database"]["user"].get<std::string>().data(),
@@ -20,10 +21,9 @@ int main() {
                   in["database"]["db"].get<std::string>().data()
                   );
 
-    //启动web服务
+    //start web server
     unsigned int max_thread_num = std::thread::hardware_concurrency();
     cinatra::http_server server(max_thread_num);
-    //server.listen("127.0.0.1", "8080");
     server.listen(in["address"].get<std::string>(), in["port"].get<std::string>());
     UserMapper userMapper(mysql);
     UserController userController(server,userMapper);

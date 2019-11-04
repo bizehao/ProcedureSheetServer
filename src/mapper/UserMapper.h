@@ -10,13 +10,12 @@
 #include "ormpp/mysql.hpp"
 #include "../base/BaseMapper.hpp"
 
-//关于用户的sql操作
+//==sql==
 class UserMapper : BaseMapper {
 public:
     explicit UserMapper(ormpp::dbng<ormpp::mysql>& mysql) : BaseMapper(mysql) {}
 
-    //根据用户名获取用户
-    std::vector<Occupation> getUserByName();
+    std::vector<bzh::User> getUserByName();
 
 };
 

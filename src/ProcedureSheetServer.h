@@ -5,7 +5,7 @@
 
 // TODO: 在此处引用程序需要的其他标头。
 #include <iostream>
-#include "controller/UserController.h"
+#include "controller/UserController.hpp"
 #include "cinatra.hpp"
 #include "ormpp/dbng.hpp"
 #include "ormpp/mysql.hpp"

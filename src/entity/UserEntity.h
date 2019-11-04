@@ -7,21 +7,31 @@
 #include <string>
 #include "ormpp/reflection.hpp"
 
-//用户类型表
-struct Occupation {
-    int id;
-    std::string occupation_name;
-};
-REFLECTION(Occupation, id, occupation_name)
+namespace bzh {
+	struct Occupation {
+		int id;
+		std::string occupation_name;
+	};
 
-//struct User {
-//    int id; //id
-//    std::string username; //用户名
-//    std::string password; //密码
-//    std::string email; //邮箱地址
-//    int type; //用户类型
-//    std::string phone; //手机号
-//    long latelyDate; //最近一次登录日期
-//    std::string ipAddress; //ip地址
-//};
-//REFLECTION(User, id, username, password, email, type, phone, latelyDate, ipAddress)
+
+	struct User {
+		int id;
+		std::string username;
+		std::string password;
+		std::string email;
+		int type;
+		std::string phone;
+		std::string lately_date;
+		std::string ip_address;
+	};
+
+	//��¼�ɹ����û���Ϣ
+	struct JSONOfUser {
+		std::string name;
+		std::string data;
+	};
+
+	REFLECTION(Occupation, id, occupation_name)
+	REFLECTION(JSONOfUser, name, data)
+	REFLECTION(User, id, username, password, email, type, phone, lately_date, ip_address)
+}

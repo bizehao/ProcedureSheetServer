@@ -17,9 +17,52 @@ add_definitions(-DORMPP_ENABLE_MYSQL)
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" src/mapper/UserMapper.cpp src/mapper/UserMapper.h src/entity/UserEntity.h src/utils/currency_sql.hpp src/base/BaseController.hpp)
-target_sources(ProcedureSheetServer PRIVATE "src/controller/UserController.cpp")
+add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
+target_sources(ProcedureSheetServer 
+PRIVATE
+"src/base/BaseController.hpp" 
+"src/base/BaseMapper.hpp" 
+)
 
+target_sources(ProcedureSheetServer 
+PRIVATE
+"src/controller/UserController.hpp" 
+)
+
+target_sources(ProcedureSheetServer 
+PRIVATE 
+"src/entity/UserEntity.h"
+)
+
+target_sources(ProcedureSheetServer 
+PRIVATE 
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.h"
+)
+
+target_sources(ProcedureSheetServer 
+PRIVATE 
+"src/utils/currency_net.hpp"
+"src/utils/currency_sql.hpp"
+"src/utils/reflex.hpp"
+"src/utils/section.h"
+"src/utils/ThreadPool.hpp"
+)
+
+target_sources(ProcedureSheetServer 
+PRIVATE 
+"src/base/BaseController.hpp"
+"src/base/BaseMapper.hpp"
+"src/controller/UserController.hpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+"src/mapper/UserMapper.cpp"
+
+)
 target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
 target_link_directories (ProcedureSheetServer PRIVATE "libs")
 
