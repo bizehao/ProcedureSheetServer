@@ -10,6 +10,7 @@
 #include "reflex.hpp"
 #include <array>
 #include <memory>
+#include "spdlog/spdlog.h"
 
 template<typename T>
 struct HandleArray {
@@ -100,7 +101,7 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
 	}
 	auto to = std::get<size>(vTuple);
 
-	std::cout << "http: " << std::get<size>(to) << std::endl;
+    spdlog::info("已加载路由: {}",std::get<size>(to));
 
 	server.set_http_handler<std::decay_t< decltype( std::get<1>(to) )>::reqMethod>(std::get<0>(to),
 		[&o, to](cinatra::request& req, cinatra::response& res) {
@@ -130,7 +131,7 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
 					res
 				);
 			}
-		});
+		},log_t{});
 }
 
 template<typename O, typename ...T>

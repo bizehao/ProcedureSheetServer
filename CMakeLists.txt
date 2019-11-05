@@ -1,82 +1,83 @@
 ﻿# CMakeList.txt: ProcedureSheetServer 的 CMake 项目，在此处包括源代码并定义
 # 项目特定的逻辑。
 #
-cmake_minimum_required (VERSION 3.14)
+cmake_minimum_required(VERSION 3.14)
 project(ProcedureSheetServer)
 set(CMAKE_CXX_STANDARD 17)
 
 #set(CMAKE_BUILD_TYPE Release)
 #关闭编译器优化
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-   message("==========")
-   #add_compile_options(-fno-elide-constructors)# -Wall
+    message("==========")
+    #add_compile_options(-fno-elide-constructors)# -Wall
 endif ()
 
-add_definitions(-DORMPP_ENABLE_MYSQL)
+add_definitions(-DORMPP_ENABLE_MYSQL -DSPDLOG_COMPILED_LIB)
 
 message("aa：" ${PROJECT_SOURCE_DIR})
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
-target_sources(ProcedureSheetServer 
-PRIVATE
-"src/base/BaseController.hpp" 
-"src/base/BaseMapper.hpp" 
-)
+add_executable(ProcedureSheetServer "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/base/BaseController.hpp"
+        "src/base/BaseMapper.hpp"
+        )
 
-target_sources(ProcedureSheetServer 
-PRIVATE
-"src/controller/UserController.hpp" 
-)
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/controller/UserController.h"
+        "src/controller/UserController.cpp"
+        )
 
-target_sources(ProcedureSheetServer 
-PRIVATE 
-"src/entity/UserEntity.h"
-)
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/entity/UserEntity.h"
+        )
 
-target_sources(ProcedureSheetServer 
-PRIVATE 
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.h"
-)
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.h"
+        )
 
-target_sources(ProcedureSheetServer 
-PRIVATE 
-"src/utils/currency_net.hpp"
-"src/utils/currency_sql.hpp"
-"src/utils/reflex.hpp"
-"src/utils/section.h"
-"src/utils/ThreadPool.hpp"
-)
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/utils/currency_net.hpp"
+        "src/utils/currency_sql.hpp"
+        "src/utils/reflex.hpp"
+        "src/utils/section.h"
+        "src/utils/ThreadPool.hpp"
+        )
 
-target_sources(ProcedureSheetServer 
-PRIVATE 
-"src/base/BaseController.hpp"
-"src/base/BaseMapper.hpp"
-"src/controller/UserController.hpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
-"src/mapper/UserMapper.cpp"
+target_sources(ProcedureSheetServer
+        PRIVATE
+        "src/base/BaseController.hpp"
+        "src/base/BaseMapper.hpp"
+        "src/controller/UserController.h"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
+        "src/mapper/UserMapper.cpp"
 
-)
-target_include_directories (ProcedureSheetServer PRIVATE "thirdParty")
-target_link_directories (ProcedureSheetServer PRIVATE "libs")
+        )
+target_include_directories(ProcedureSheetServer PRIVATE "thirdParty")
+target_link_directories(ProcedureSheetServer PRIVATE "libs")
 
-if(WIN32)
-   target_link_libraries(ProcedureSheetServer PRIVATE "libmysql")
-   # Copy DLL files to output directory
-   add_custom_command(TARGET ProcedureSheetServer POST_BUILD 
-       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-       "${PROJECT_SOURCE_DIR}/libs/libmysql.dll"              
-       $<TARGET_FILE_DIR:ProcedureSheetServer>)
-endif()
+if (WIN32)
+    target_link_libraries(ProcedureSheetServer PRIVATE "libmysql")
+    # Copy DLL files to output directory
+    add_custom_command(TARGET ProcedureSheetServer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/libs/libmysql.dll"
+            $<TARGET_FILE_DIR:ProcedureSheetServer>)
+endif ()
 
 if (UNIX)
-   target_link_libraries(ProcedureSheetServer PRIVATE mysqlclient pthread uuid stdc++fs)
+    target_link_libraries(ProcedureSheetServer PRIVATE spdlog mysqlclient pthread uuid stdc++fs)
 endif ()
 
 # TODO: 如有需要，请添加测试并安装目标。

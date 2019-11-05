@@ -763,7 +763,11 @@ namespace cinatra {
 			return std::move(aspect_data_);
 		}
 
-	private:
+        std::map<std::string,std::string>& get_multipart_form_map(){
+            return multipart_form_map_;
+		}
+
+    private:
 		void resize_double() {
 			size_t size = buf_.size();
 			resize(2 * size);

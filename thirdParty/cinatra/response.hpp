@@ -348,6 +348,11 @@ namespace cinatra {
 			counter_ = 0;
 		}
 
+		//返回主体内容
+        std::string get_content(){
+            return content_;
+		}
+
 	private:
 		
 		//std::map<std::string, std::string, ci_less> headers_;
