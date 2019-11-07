@@ -13,6 +13,6 @@ public:
 	void exec() override;
 
 private:
-	//»ñÈ¡ÓÊÏäÑéÖ¤Âë
+	//è·å–é‚®ç®±éªŒè¯ç 
 	std::string getEmailCode(std::string& to_user);
 };
