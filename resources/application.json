@@ -1,10 +1,15 @@
 {
-  "address": "192.168.1.233",
+  "address": "0.0.0.0",
   "port": "8080",
   "database": {
     "address": "127.0.0.1",
     "user": "root",
     "password": "bzh960912",
     "db": "procedure-sheet"
+  },
+  "email": {
+    "host": "smtp.163.com",
+    "myemail": "18635939450@163.com",
+    "password": "bzh123456789"
   }
 }
