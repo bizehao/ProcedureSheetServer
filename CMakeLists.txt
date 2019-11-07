@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_BUILD_TYPE Release)
 #关闭编译器优化
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    #add_compile_options(-fno-elide-constructors)# -Wall
+    add_compile_options(-fno-elide-constructors -Wall)
 endif ()
 
 #使用mysql
@@ -17,10 +17,6 @@ add_definitions(-DORMPP_ENABLE_MYSQL)
 add_definitions(-DSPDLOG_COMPILED_LIB)
 
 if (WIN32)
-	add_definitions(-DCMAKE_TOOLCHAIN_FILE="D:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-endif ()
-
-if (UNIX)
 	add_definitions(-DCMAKE_TOOLCHAIN_FILE="D:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
 endif ()
 
@@ -82,7 +78,7 @@ if (WIN32)
 endif ()
 
 if (UNIX)
-    target_link_libraries(ProcedureSheetServer PRIVATE spdlog mysqlclient pthread uuid stdc++fs)
+    target_link_libraries(ProcedureSheetServer PRIVATE mysqlclient pthread uuid stdc++fs)
 endif ()
 
 # TODO: 如有需要，请添加测试并安装目标。

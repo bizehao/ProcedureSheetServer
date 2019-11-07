@@ -1,7 +1,7 @@
 #include "ProcedureSheetServer.h"
 
 int main() {
-	//设置日志格式
+	//璁剧疆鏃ュ織鏍煎紡
 	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S] [%l] [thread %t] %v");
 #ifdef _WIN32
 	system("chcp 65001");

@@ -146,7 +146,7 @@ std::string bzh::seedEmail(std::string to_user) {
 	static asio::ip::tcp::socket sock(io_context);
 	MyMail email;
 	email.set_to(to_user);
-	email.set_subject("ÑéÖ¤Âë:");
+	email.set_subject("éªŒè¯ç :");
 	std::string msg;
 	std::srand(std::time(nullptr));
 	for (int i = 0; i < 6; i++) {

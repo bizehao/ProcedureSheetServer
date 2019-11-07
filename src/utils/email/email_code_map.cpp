@@ -18,7 +18,7 @@ bzh::email_code& bzh::email_code::getInstance() {
 	return emailCode;
 }
 
-void bzh::email_code::put(std::string key, email_code_model& value) {
+void bzh::email_code::put(const std::string& key,const email_code_model& value) {
 	std::unique_lock<std::shared_mutex> _unique_lock(_shard_mutex);
 	map[key] = value;
 	if (!isExecued) {

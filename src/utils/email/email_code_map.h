@@ -11,37 +11,37 @@
 #include <asio.hpp>
 #include <iostream>
 
-
 namespace bzh {
 
-	class email_code {
+    class email_code {
 
-	public:
-		email_code(asio::io_context& io) :ms(0), _timer(io) {};
-		~email_code() {};
+    public:
+        explicit email_code(asio::io_context& io) : _timer(io), ms(0) {};
 
-		struct email_code_model {
-			std::chrono::system_clock::time_point initDate;
-			std::string code;
-		};
+        ~email_code() = default;
 
-		static bzh::email_code& getInstance();
+        struct email_code_model {
+            std::chrono::system_clock::time_point initDate;
+            std::string code;
+        };
 
-		void put(std::string key, email_code_model& value);
+        static bzh::email_code& getInstance();
 
-		std::string get(std::string& key);
+        void put(const std::string& key,const email_code_model& value);
 
-		void exec();
+        std::string get(std::string& key);
 
-	private:
+        void exec();
 
-		std::shared_mutex _shard_mutex;
-		std::condition_variable_any _cva;
-		asio::steady_timer _timer;
-		std::map<std::string, email_code_model> map;
-		bool isExecued = false; //µ±Ç°µÄÖ´ĞĞ×´Ì¬
-		std::vector<std::string> destruction;
-		int ms;//´æ»îÊ±¼ä
-	};
+    private:
+
+        std::shared_mutex _shard_mutex;
+        std::condition_variable_any _cva;
+        asio::steady_timer _timer;
+        std::map<std::string, email_code_model> map;
+        bool isExecued = false; //å½“å‰çš„æ‰§è¡ŒçŠ¶æ€
+        std::vector<std::string> destruction;
+        int ms;//å­˜æ´»æ—¶é—´
+    };
 }
 
