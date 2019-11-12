@@ -10,6 +10,7 @@
 #include <condition_variable>
 #include <asio.hpp>
 #include <iostream>
+#include <optional>
 
 namespace bzh {
 
@@ -29,7 +30,7 @@ namespace bzh {
 
         void put(const std::string& key,const email_code_model& value);
 
-        std::string get(std::string& key);
+        std::optional<std::string> get(std::string& key);
 
         void exec();
 

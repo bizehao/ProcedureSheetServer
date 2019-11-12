@@ -13,6 +13,16 @@ public:
 	void exec() override;
 
 private:
-	//获取邮箱验证码
-	std::string getEmailCode(std::string& to_user);
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	获取邮箱验证码. </summary>
+	///
+	/// <remarks>	Bzh, 2019/11/8. </remarks>
+	///
+	/// <param name="to_user">	[in,out] 邮箱地址 </param>
+	///
+	/// <returns>	The email code. </returns>
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	std::string getEmailCode(std::string& email);
 };

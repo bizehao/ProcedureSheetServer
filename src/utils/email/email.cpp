@@ -146,7 +146,7 @@ std::string bzh::seedEmail(std::string to_user) {
 	static asio::ip::tcp::socket sock(io_context);
 	MyMail email;
 	email.set_to(to_user);
-	email.set_subject("验证码:");
+	email.set_subject("Verification Code:");
 	std::string msg;
 	std::srand(std::time(nullptr));
 	for (int i = 0; i < 6; i++) {
@@ -155,7 +155,7 @@ std::string bzh::seedEmail(std::string to_user) {
 	}
 	email.set_content(msg);
 	email.mail(sock, io_context);
-	return "111";
+	return std::move(msg);
 }
 
 string MyMail::host_ = "";

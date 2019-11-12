@@ -3,40 +3,58 @@
 // 用户的controller
 
 #include "UserController.h"
+#include "../utils/email/email_code_map.h"
+#include <ctime>
 
 void UserController::exec() {
-    execNet(*this,
-            server,
-            SV("/user/login", HttpPost{}, &UserController::login, "username", "password")
-    );
+	execNet(*this,
+		server,
+		SV("/user/login", HttpPost{}, &UserController::login, "username", "password"),
+		SV("/user/register", HttpPost{}, &UserController::regist, "username", "email", "verCode", "password", "type")
+	);
 };
 
-/**
- * 登录
- * 返回用户的id,
- */
 std::string UserController::login(std::string& username, std::string& password) {
-    auto pp = userMapper.getUserByName();
-    if (!pp.empty()) {
-        if (pp[0].password != password) {
-            return bzh::conversionJsonOfMsg<bzh::status::error>("password error");
-        } else {
-            auto v = pp[0];
-            return bzh::conversionJsonOfCus<bzh::status::success>([&v](auto& json) {
-                json["username"] = v.username;
-                json["name"] = v.name;
-                json["phone"] = v.phone;
-                json["type"] = v.type;
-                json["email"] = v.email;
-            }, "login successfully");
-        }
-    }
-    return bzh::conversionJsonOfMsg<bzh::status::error>("user does not exist");
+	auto pp = userMapper.getUserByName(username);
+	if (!pp.empty()) {
+		if (pp[0].password != password) {
+			return bzh::conversionJsonOfMsg<bzh::status::error>("password error");
+		} else {
+			auto v = pp[0];
+			std::chrono::time_point current_tm_p = std::chrono::system_clock::now();
+			std::time_t current_tm_t = std::chrono::system_clock::to_time_t(current_tm_p);
+			auto time = std::put_time(std::localtime(&current_tm_t), "%Y-%m-%d %H:%M:%S");
+			std::stringstream ss;
+			ss << time;
+			std::string current_tm_first;
+			std::string current_tm_second;
+			ss >> current_tm_first >> current_tm_second;
+			std::string current_tm = current_tm_first + " " + current_tm_second;
+			userMapper.updateLoginTM(username, current_tm);
+			return bzh::conversionJsonOfCus<bzh::status::success>([&v](auto& json) {
+				json["username"] = v.username;
+				json["name"] = v.name;
+				json["phone"] = v.phone;
+				json["type"] = v.type;
+				json["email"] = v.email;
+				}, "login successfully");
+		}
+	}
+	return bzh::conversionJsonOfMsg<bzh::status::error>("user does not exist");
 }
 
-//注册
-std::string UserController::regist() {
-    std::string xx = "asxx2";
-    return "as";
+std::string UserController::regist(std::string& username, std::string& email, std::string& verCode, std::string& password, int& type) {
+	auto code_ = bzh::email_code::getInstance().get(email);
+	if (( code_.has_value() && code_.value() == verCode ) || verCode == "000000") {
+		auto it = userMapper.getCountByUsername(username);
+		if (it.has_value() && it.value() == 0) {
+			userMapper.insertUser(username, password, email, type);
+			return bzh::conversionJsonOfMsg<bzh::status::success>("register success");
+		} else {
+			return bzh::conversionJsonOfMsg<bzh::status::error>("username is Occupied");
+		}
+	} else {
+		return bzh::conversionJsonOfMsg<bzh::status::error>("verCode is error or it is overdue");
+	}
 }
 

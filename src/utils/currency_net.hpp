@@ -95,14 +95,12 @@ static auto getNextValue(std::array<std::string, AN>& array, Tup&& tup) {
 	array[N] = std::get<CN - AN + N>(tup);
 }
 
-template<size_t size, typename O, typename ...T>
-static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& vTuple) {
-	if constexpr (size > 0) {
-		joinNet<size - 1>(o, server, vTuple);
-	}
+template<size_t size, typename O, typename Tup>
+static void joinNet_impl(O& o, cinatra::http_server& server, Tup&& vTuple) {
+
 	auto to = std::get<size>(vTuple);
 
-    spdlog::info("route: {}",std::get<size>(to));
+	spdlog::info("route: {}", std::get<0>(to));
 
 	server.set_http_handler<std::decay_t< decltype( std::get<1>(to) )>::reqMethod>(std::get<0>(to),
 		[&o, to](cinatra::request& req, cinatra::response& res) {
@@ -132,10 +130,15 @@ static void joinNet(O& o, cinatra::http_server& server, const std::tuple<T...>& 
 					res
 				);
 			}
-		},log_t{});
+		}, log_t{});
+}
+
+template<typename O, typename Tup, size_t ...N>
+void joinNet(O& o, cinatra::http_server& server, Tup&& tup, std::index_sequence<N...>) {
+	( joinNet_impl<N>(o, server, std::forward<Tup>(tup)), ... );
 }
 
 template<typename O, typename ...T>
 void execNet(O& o, cinatra::http_server& server, T ...t) {
-	joinNet<sizeof...( t ) - 1>(o, server, std::make_tuple(t...));
+	joinNet(o, server, std::make_tuple(t...), std::index_sequence_for<T...>());
 }

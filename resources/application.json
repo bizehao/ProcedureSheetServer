@@ -11,5 +11,8 @@
     "host": "smtp.163.com",
     "myemail": "18635939450@163.com",
     "password": "bzh123456789"
+  },
+  "resources": {
+    "public_root_directory": "C:/Users/24221/source/repos/ProcedureSheetServer/resources/imgs/"
   }
 }

@@ -14,7 +14,6 @@ namespace bzh {
     };
 
     struct User {
-        int id;
         std::string username;
         std::string password;
         std::string name;
@@ -22,10 +21,9 @@ namespace bzh {
         int type;
         std::string phone;
         std::string lately_date;
-        std::string ip_address;
     };
 
     REFLECTION(Occupation, id, occupation_name)
 
-    REFLECTION(User, id, username, password, name, email, type, phone, lately_date, ip_address)
+    REFLECTION(User, username, password, name, email, type, phone, lately_date)
 }

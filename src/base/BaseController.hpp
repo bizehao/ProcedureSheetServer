@@ -41,6 +41,7 @@ namespace bzh {
         error = 300
     };
 
+	//实体对象转成json
     template<status ss, typename T>
     std::string conversionJsonOfObj(T&& t, std::string message = "") {
         nlohmann::json json = t;
@@ -51,6 +52,7 @@ namespace bzh {
         return std::move(json.dump(4));
     }
 
+	//自定义格式内容
     template<status ss>
     std::string conversionJsonOfCus(const std::function<void(nlohmann::json&)>& t, std::string message = "") {
         nlohmann::json json;
@@ -62,8 +64,9 @@ namespace bzh {
         return std::move(json.dump(4));
     }
 
+	//仅消息
     template<status ss>
-    std::string conversionJsonOfMsg(std::string message) {
+    std::string conversionJsonOfMsg(std::string message = "") {
         nlohmann::json json;
         json["status"] = static_cast<int>( ss );
         json["message"] = message;
