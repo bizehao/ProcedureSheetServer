@@ -5,7 +5,7 @@ int main() {
 	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S] [%l] [thread %t] %v");
 #ifdef _WIN32
 	system("chcp 65001");
-	std::ifstream read("C:\\Users\\24221\\source\\repos\\ProcedureSheetServer\\resources\\application.json");
+	std::ifstream read("F:\\source\\repos\\ProcedureSheetServer\\resources\\application.json");
 #else
 	std::ifstream read("../resources/application.json");
 #endif

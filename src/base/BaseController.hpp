@@ -13,77 +13,89 @@
 #define SV(...) std::make_tuple(__VA_ARGS__)
 
 struct HttpGet {
-    static constexpr auto reqMethod = cinatra::GET;
+	static constexpr auto reqMethod = cinatra::GET;
 };
 
 struct HttpPost {
-    static constexpr auto reqMethod = cinatra::POST;
+	static constexpr auto reqMethod = cinatra::POST;
 };
 
 namespace bzh {
 
-    template<typename T>
-    void to_json(nlohmann::json& j, const T& p) {
-        j = nlohmann::json{};
-        if constexpr (iguana::is_reflection_v<T>) {
-            iguana::for_each(p, [&j, &p](auto item, auto i) {
-                constexpr auto Idx = decltype( i )::value;
-                std::string_view fieldName = iguana::get_name<T>(Idx);
-                j["data"][fieldName.data()] = p.*item;
-            });
-        } else {
-            std::cout << "it is not reflection" << std::endl;
-        }
-    }
+	// class
+	template<typename T>
+	std::enable_if_t<iguana::is_reflection_v<T>, void> to_json(nlohmann::json& j, const T& p) {
+		j = nlohmann::json{};
+		iguana::for_each(p, [&j, &p](auto item, auto i) {
+			constexpr auto Idx = decltype( i )::value;
+			std::string_view fieldName = iguana::get_name<T>(Idx);
+			j[fieldName.data()] = p.*item;
+			});
+	}
 
-    enum class status {
-        success = 200,
-        error = 300
-    };
+	//vector<class>
+	template<typename T>
+	std::enable_if_t<iguana::is_reflection_v<T>, void> to_json(nlohmann::json& j, const std::vector<T>& p) {
+		j = nlohmann::json{};
+		for (auto& it : p) {
+			nlohmann::json tmpJson;
+			iguana::for_each(it, [&j, &it, &tmpJson](auto item, auto i) {
+				constexpr auto Idx = decltype( i )::value;
+				std::string_view fieldName = iguana::get_name<T>(Idx);
+				tmpJson[fieldName.data()] = it.*item;
+				});
+			j.push_back(tmpJson);
+		}
+	}
+
+	enum class status {
+		success = 200,
+		error = 300
+	};
 
 	//实体对象转成json
-    template<status ss, typename T>
-    std::string conversionJsonOfObj(T&& t, std::string message = "") {
-        nlohmann::json json = t;
-        json["status"] = static_cast<int>( ss );
-        if (!message.empty()) {
-            json["message"] = message;
-        }
-        return std::move(json.dump(4));
-    }
+	template<status ss, typename T>
+	std::string conversionJsonOfObj(T&& t, std::string message = "") {
+		nlohmann::json json = t;
+		json["status"] = static_cast<int>( ss );
+		if (!message.empty()) {
+			json["message"] = message;
+		}
+		return std::move(json.dump(4));
+	}
 
 	//自定义格式内容
-    template<status ss>
-    std::string conversionJsonOfCus(const std::function<void(nlohmann::json&)>& t, std::string message = "") {
-        nlohmann::json json;
-        json["status"] = static_cast<int>( ss );
-        if (!message.empty()) {
-            json["message"] = message;
-        }
-        t(json["data"]);
-        return std::move(json.dump(4));
-    }
+	template<status ss>
+	std::string conversionJsonOfCus(const std::function<void(nlohmann::json&)>& t, std::string message = "") {
+		nlohmann::json json;
+		json["status"] = static_cast<int>( ss );
+		if (!message.empty()) {
+			json["message"] = message;
+		}
+		t(json["data"]);
+		return std::move(json.dump(4));
+	}
 
 	//仅消息
-    template<status ss>
-    std::string conversionJsonOfMsg(std::string message = "") {
-        nlohmann::json json;
-        json["status"] = static_cast<int>( ss );
-        json["message"] = message;
-        return std::move(json.dump(4));
-    }
+	template<status ss>
+	std::string conversionJsonOfMsg(std::string message = "") {
+		nlohmann::json json;
+		json["status"] = static_cast<int>( ss );
+		json["message"] = message;
+		return std::move(json.dump(4));
+	}
 }
 
 
 class BaseController {
 public:
-    BaseController(cinatra::http_server& server, UserMapper& userMapper) : server(server), userMapper(userMapper) {}
+	BaseController(cinatra::http_server& server, UserMapper& userMapper) : server(server), userMapper(userMapper) {}
 
-    virtual void exec() = 0;
+	virtual void exec() = 0;
 
-    virtual ~BaseController() = default;
+	virtual ~BaseController() = default;
 
 protected:
-    cinatra::http_server& server;
-    UserMapper& userMapper;
+	cinatra::http_server& server;
+	UserMapper& userMapper;
 };

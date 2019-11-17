@@ -25,3 +25,7 @@ bool UserMapper::insertUser(std::string& username, std::string& password, std::s
 	return bzh::customizeCUD(mysql, "INSERT INTO users ( username, password, name, email, type ) VALUES (?, ?, ?, ?, ?)",
 		username, password, username, email, std::to_string(type));
 }
+
+std::vector<bzh::LanguageType> UserMapper::getLanguageList() {
+	return bzh::customizeQuery<bzh::LanguageType>(mysql, "SELECT id, language_name FROM language_type");
+}

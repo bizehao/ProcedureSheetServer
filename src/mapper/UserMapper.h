@@ -30,6 +30,9 @@ public:
 
 	//添加用户
 	bool insertUser(std::string& username, std::string& password, std::string& email, int& type);
+
+	//获取语言列表
+	std::vector<bzh::LanguageType> getLanguageList();
 };
 
 

@@ -5,7 +5,8 @@
 void CommController::exec() {
 	execNet(*this,
 		server,
-		SV("/comm/email_code", HttpGet{}, &CommController::getEmailCode, "email")
+		SV("/comm/email_code", HttpGet{}, &CommController::getEmailCode, "email"),
+		SV("/comm/language_list", HttpGet{}, &CommController::getLanguageList)
 	);
 }
 
@@ -18,4 +19,11 @@ std::string CommController::getEmailCode(std::string& email) {
 	} else {
 		return bzh::conversionJsonOfMsg<bzh::status::error>("email is occupied");
 	}
+}
+
+std::string CommController::getLanguageList() {
+	auto language_list = userMapper.getLanguageList();
+	return bzh::conversionJsonOfCus<bzh::status::success>([&language_list](nlohmann::json& json) {
+		json = language_list;
+		},"language type list");
 }

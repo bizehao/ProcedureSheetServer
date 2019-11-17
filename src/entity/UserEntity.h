@@ -23,7 +23,14 @@ namespace bzh {
         std::string lately_date;
     };
 
+	struct LanguageType {
+		int id;
+		std::string language_name;
+	};
+
     REFLECTION(Occupation, id, occupation_name)
 
     REFLECTION(User, username, password, name, email, type, phone, lately_date)
+
+	REFLECTION(LanguageType, id, language_name)
 }
