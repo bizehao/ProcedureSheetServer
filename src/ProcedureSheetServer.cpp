@@ -28,6 +28,7 @@ int main() {
 	cinatra::http_server server(max_thread_num);
 	//公共资源api  http://xxx:xxx/resources/imgs/xxx.xxx
 	server.set_public_root_directory("resources/imgs", in["resources"]["public_root_directory"].get<std::string>());
+	server.set_static_dir("/");//图片下载的资源目录
 	server.enable_http_cache(false);//set global cache
 	server.set_res_cache_max_age(86400);
 	server.set_cache_max_age(5);
@@ -35,6 +36,7 @@ int main() {
 	UserMapper userMapper(mysql);
 	UserController(server, userMapper).exec();
 	CommController(server, userMapper).exec();
+	OrderController(server, userMapper).exec();
 	//start web socket
 	MyWebSocket myWebSocket;
 	server.set_http_handler<cinatra::GET, cinatra::POST>("/ws", [&myWebSocket](cinatra::request& req, cinatra::response& res) {
@@ -69,25 +71,3 @@ int main() {
 	server.run();
 	return EXIT_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

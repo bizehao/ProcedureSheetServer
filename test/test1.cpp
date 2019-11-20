@@ -4,18 +4,31 @@
 #include <iostream>
 #include <fstream>
 #include <io.h>
+#include "../src/utils/reflex.hpp"
+#include <type_traits>
 
+class AA {
+public:
+	virtual void MM() = 0;
+	void say();
+};
+
+class BB : public AA {
+public:
+	void MM() override {};
+
+	void spp() {
+		this->say();
+	}
+};
+
+void AA::say() {
+	std::cout << "AA" << std::endl;
+	BB* xx = static_cast<BB*>( this );
+	std::cout << typeid( xx ).name() << std::endl;
+}
 
 int main() {
-	std::ifstream src_path("G:\\文档\\api");
-	if (src_path.is_open()) {
-		std::cout << "存在" << std::endl;
-	} else {
-		std::cout << "不存在" << std::endl;
-	}
-	std::string prefix = "G:/test/";
-	if (_access(prefix.c_str(), 0) == -1) {//如果文件夹不存在
-		速_mkdir(prefix.c_str());
-	}	
-		
+	BB bb;
+	bb.say();
 }

@@ -18,7 +18,7 @@ public:
 private:
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Login. </summary>
+	/// <summary>	登录  </summary>
 	///
 	/// <remarks>	Bzh, 2019/11/8. </remarks>
 	///
@@ -31,7 +31,7 @@ private:
 	std::string login(std::string& username, std::string& password);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Regists. </summary>
+	/// <summary>	注册 </summary>
 	///
 	/// <remarks>	Bzh, 2019/11/8. </remarks>
 	///

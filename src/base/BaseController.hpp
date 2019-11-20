@@ -9,8 +9,14 @@
 #include "../utils/currency_net.hpp"
 #include <functional>
 
+//定义那个类
+#define CLASS_TYPE
+
+//添加
+#define APPEND_REQUEST(...) baseExecNet(static_cast<CLASS_TYPE>(*this), ##__VA_ARGS__);
+
 //第一个请求头  第二个请求的方法地址 剩余的为参数字段名
-#define SV(...) std::make_tuple(__VA_ARGS__)
+#define SV(REQ_ADDRESS, REQ_TYPE, REQ_METHOD, ...) std::make_tuple(REQ_ADDRESS, REQ_TYPE{}, &CLASS_TYPE::REQ_METHOD, ##__VA_ARGS__)
 
 struct HttpGet {
 	static constexpr auto reqMethod = cinatra::GET;
@@ -96,6 +102,12 @@ public:
 	virtual ~BaseController() = default;
 
 protected:
+
+	template<typename OBJ, typename... T>
+	void baseExecNet(OBJ&& obj, T... t) {
+		execNet(obj, server, t...);
+	}
+
 	cinatra::http_server& server;
 	UserMapper& userMapper;
 };

@@ -56,14 +56,13 @@ struct type_return<T*> {
 	}
 };
 
+//带参数
 template<size_t ...N, typename Fun, typename Ob, typename Tup>
 static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, Tup&& tup, cinatra::response& res) {
-	if constexpr (std::is_same_v<member_return_t<Fun>, void>) {
-		std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob),
-			*std::get<N>(std::forward<Tup>(tup))...);
+	if constexpr (std::is_same_v<member_return_t<std::decay_t<Fun>>, void>) {
+		std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), *std::get<N>(std::forward<Tup>(tup))...);
 	} else {
-		auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob),
-			*std::get<N>(std::forward<Tup>(tup))...);
+		auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), *std::get<N>(std::forward<Tup>(tup))...);
 		if constexpr (std::is_same_v<std::decay_t<decltype( return_value )>, std::string>) {
 			res.set_status_and_content(cinatra::status_type::ok, std::move(return_value));
 		} else {
@@ -72,9 +71,10 @@ static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, 
 	}
 }
 
+//不带参数
 template<size_t ...N, typename Fun, typename Ob>
 static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, cinatra::response& res) {
-	if constexpr (std::is_same_v<member_return_t<Fun>, void>) {
+	if constexpr (std::is_same_v<member_return_t<std::decay_t<Fun>>, void>) {
 		std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob));
 	} else {
 		auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob));

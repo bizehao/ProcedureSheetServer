@@ -7,11 +7,12 @@
 #include <ctime>
 
 void UserController::exec() {
-	execNet(*this,
-		server,
-		SV("/user/login", HttpPost{}, &UserController::login, "username", "password"),
-		SV("/user/register", HttpPost{}, &UserController::regist, "username", "email", "verCode", "password", "type")
-	);
+
+#define CLASS_TYPE UserController
+	APPEND_REQUEST(
+		SV("/user/login", HttpPost, login, "username", "password"),
+		SV("/user/register", HttpPost, regist, "username", "email", "verCode", "password", "type")
+	)
 };
 
 std::string UserController::login(std::string& username, std::string& password) {

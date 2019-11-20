@@ -7,6 +7,7 @@
 #include <iostream>
 #include "controller/UserController.h"
 #include "controller/CommController.h"
+#include "controller/OrderController.h"
 #include "cinatra.hpp"
 #include "ormpp/dbng.hpp"
 #include "ormpp/mysql.hpp"

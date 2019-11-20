@@ -137,7 +137,12 @@ namespace cinatra {
 		}
 
 		void set_static_dir(std::string&& path) {
-			static_dir_ = public_root_path_ + std::move(path) + "/";
+			if (absolute_path_ != "") {
+				static_dir_ = absolute_path_ + std::move(path);
+			} else {
+				static_dir_ = public_root_path_ + std::move(path) + "/";
+			}
+			
 		}
 
 		const std::string& static_dir() const {
