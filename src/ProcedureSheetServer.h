@@ -8,6 +8,7 @@
 #include "controller/UserController.h"
 #include "controller/CommController.h"
 #include "controller/OrderController.h"
+#include "controller/TestController.h"
 #include "cinatra.hpp"
 #include "ormpp/dbng.hpp"
 #include "ormpp/mysql.hpp"

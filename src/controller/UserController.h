@@ -6,14 +6,20 @@
 
 #include <iostream>
 #include <tuple>
-#include "../utils/section.h"
 #include "../base/BaseController.hpp"
+
+#define CLASS_TYPE UserController
 
 class UserController : BaseController {
 public:
-	UserController(cinatra::http_server& server, UserMapper& userMapper) : BaseController(server, userMapper) {}
+	UserController(cinatra::http_server& server_, UserMapper& userMapper_) : BaseController(server_), userMapper(userMapper_) {}
 
-	void exec() override;
+	void exec() override {
+		APPEND_REQUEST(
+			SV("/user/login", HttpPost, login, username, password),
+			SV("/user/register", HttpPost, regist, username, email, vercode, password, type)
+		);
+	};
 
 private:
 
@@ -44,4 +50,6 @@ private:
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::string regist(std::string& username, std::string& email, std::string& vercode, std::string& password, int& type);
+
+	UserMapper& userMapper;
 };

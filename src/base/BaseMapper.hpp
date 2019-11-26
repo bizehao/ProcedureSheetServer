@@ -9,7 +9,7 @@
 
 class BaseMapper{
 public:
-    BaseMapper(ormpp::dbng<ormpp::mysql>& mysql):mysql(mysql){}
+    BaseMapper(ormpp::dbng<ormpp::mysql>& mysql_):mysql(mysql_){}
 protected:
     ormpp::dbng<ormpp::mysql>& mysql;
 };

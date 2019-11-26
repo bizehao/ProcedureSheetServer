@@ -42,27 +42,13 @@ private:
 	cinatra::response& res;
 };
 
-template<typename T>
-struct type_return {
-	constexpr static auto out(T t) {
-		return t;
-	}
-};
-
-template<typename T>
-struct type_return<T*> {
-	constexpr static auto out(T* t) {
-		return *t;
-	}
-};
-
 //带参数
 template<size_t ...N, typename Fun, typename Ob, typename Tup>
-static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, Tup&& tup, cinatra::response& res) {
+static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob& ob, Tup&& tup, cinatra::response& res) {
 	if constexpr (std::is_same_v<member_return_t<std::decay_t<Fun>>, void>) {
-		std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), *std::get<N>(std::forward<Tup>(tup))...);
+		std::invoke(std::forward<Fun>(fun), ob, *std::get<N>(std::forward<Tup>(tup))...);
 	} else {
-		auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob), *std::get<N>(std::forward<Tup>(tup))...);
+		auto return_value = std::invoke(std::forward<Fun>(fun), ob, *std::get<N>(std::forward<Tup>(tup))...);
 		if constexpr (std::is_same_v<std::decay_t<decltype( return_value )>, std::string>) {
 			res.set_status_and_content(cinatra::status_type::ok, std::move(return_value));
 		} else {
@@ -73,22 +59,25 @@ static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, 
 
 //不带参数
 template<size_t ...N, typename Fun, typename Ob>
-static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob&& ob, cinatra::response& res) {
+static void invokeOfTuple(const std::index_sequence<N...>&, Fun&& fun, Ob& ob, cinatra::response& res) {
 	if constexpr (std::is_same_v<member_return_t<std::decay_t<Fun>>, void>) {
-		std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob));
+		std::invoke(std::forward<Fun>(fun), ob);
 	} else {
-		auto return_value = std::invoke(std::forward<Fun>(fun), std::forward<Ob>(ob));
+		auto return_value = std::invoke(std::forward<Fun>(fun), ob);
 		if constexpr (std::is_same_v<std::decay_t<decltype( return_value )>, std::string>) {
-			res.set_status_and_content(cinatra::status_type::ok, std::move(return_value));
+			res.set_status_and_content(cinatra::status_type::ok, std::move(return_value),
+				cinatra::res_content_type::json, cinatra::content_encoding::none);
 		} else {
-			res.set_status_and_content(cinatra::status_type::ok, std::move(std::to_string(return_value)));
+			res.set_status_and_content(cinatra::status_type::ok, std::move(std::to_string(return_value)),
+				cinatra::res_content_type::json, cinatra::content_encoding::none);
 		}
 	}
 }
 
-//元祖大小 数组大小 下标值 0  5  3
+//元祖大小 数组大小 下标值 0  5  2
+// N:初始下标 CN:宏里的参数数量 AN:数组的长度
 template<size_t N, size_t CN, size_t AN, typename Tup>
-static auto getNextValue(std::array<std::string, AN>& array, Tup&& tup) {
+static constexpr auto getNextValue(std::array<std::string, AN>& array, Tup&& tup) {
 	if constexpr (N < AN - 1) {
 		getNextValue<N + 1, CN>(array, tup);
 	}
@@ -104,7 +93,7 @@ static void joinNet_impl(O& o, cinatra::http_server& server, Tup&& vTuple) {
 
 	server.set_http_handler<std::decay_t< decltype( std::get<1>(to) )>::reqMethod>(std::get<0>(to),
 		[&o, to](cinatra::request& req, cinatra::response& res) {
-			auto fun = std::get<2>(to); //函数值
+			auto fun = std::get<2>(to); //要调用的函数
 			//参数类型数量
 			constexpr size_t args_size = std::tuple_size_v<member_args_t<decltype( fun )>>;
 			//std::cout << "接收参数长度: " << args_size << std::endl;
@@ -123,14 +112,9 @@ static void joinNet_impl(O& o, cinatra::http_server& server, Tup&& vTuple) {
 				getNextValue<0, ss>(array, to);
 				/*auto tup = a2t<hangArray_lambda, member_args_t<decltype( fun )>>(array, req, res);*/
 				auto tup = a2t(array, HandleArray<member_args_t<decltype( fun )>>(req, res));
-				invokeOfTuple(std::make_index_sequence<args_size>(),
-					fun,
-					std::forward<O>(o),
-					tup,
-					res
-				);
+				invokeOfTuple(std::make_index_sequence<args_size>(), fun, o, tup, res);
 			}
-		}, log_t{});
+		}, log_t{}, jwt_t{});
 }
 
 template<typename O, typename Tup, size_t ...N>

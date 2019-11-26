@@ -1,5 +1,15 @@
 #include "ProcedureSheetServer.h"
 
+class xx {
+public:
+	xx() {
+		std::cout << "gouzao" << std::endl;
+	}
+	~xx() {
+		std::cout << "xigou" << std::endl;
+	}
+};
+
 int main() {
 	//设置日志格式
 	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S] [%l] [thread %t] %v");
@@ -37,6 +47,7 @@ int main() {
 	UserController(server, userMapper).exec();
 	CommController(server, userMapper).exec();
 	OrderController(server, userMapper).exec();
+	TestController(server, userMapper).exec();
 	//start web socket
 	MyWebSocket myWebSocket;
 	server.set_http_handler<cinatra::GET, cinatra::POST>("/ws", [&myWebSocket](cinatra::request& req, cinatra::response& res) {

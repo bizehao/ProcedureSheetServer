@@ -3,32 +3,28 @@
 //
 #include <iostream>
 #include <fstream>
-#include <io.h>
 #include "../src/utils/reflex.hpp"
 #include <type_traits>
-
-class AA {
-public:
-	virtual void MM() = 0;
-	void say();
-};
-
-class BB : public AA {
-public:
-	void MM() override {};
-
-	void spp() {
-		this->say();
-	}
-};
-
-void AA::say() {
-	std::cout << "AA" << std::endl;
-	BB* xx = static_cast<BB*>( this );
-	std::cout << typeid( xx ).name() << std::endl;
-}
+#include <chrono>
+#include <cassert>
+#include <thread>
+#include "jwt/jwt.hpp"
+#include "../src/base/BaseController.hpp"
 
 int main() {
-	BB bb;
-	bb.say();
+	using namespace jwt::params;
+
+	jwt::jwt_object obj{ algorithm("hs256"), secret("secret") };
+	obj.add_claim("iss", "arun.muralidharan")
+		.add_claim("exp", std::chrono::system_clock::now() - std::chrono::seconds{ 1 })
+		;
+
+	std::error_code ec;
+	auto enc_str = obj.signature(ec);
+	assert(!ec);
+
+	auto dec_obj = jwt::decode(enc_str, algorithms({ "hs256" }), ec, secret("secret"), verify(true));
+	assert(ec);
+	assert(ec.value() == static_cast<int>( jwt::VerificationErrc::TokenExpired ));
+	return 0;
 }

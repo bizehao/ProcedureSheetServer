@@ -20,6 +20,7 @@ find_package(asio REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(Cpp-Taskflow REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 source_group("src" FILES "src/ProcedureSheetServer.cpp" "src/ProcedureSheetServer.h")
 file(GLOB _base_files "src/base/*.h" "src/base/*.hpp" "src/base/*.cpp")
@@ -69,12 +70,15 @@ target_link_libraries(ProcedureSheetServer
 						asio::asio 
 						nlohmann_json::nlohmann_json 
 						spdlog::spdlog 
-						Cpp-Taskflow::Cpp-Taskflow)
+						Cpp-Taskflow::Cpp-Taskflow
+						${OPENSSL_LIBRARIES})
 
 add_executable(test1 test/test1.cpp)
 target_include_directories(test1 PRIVATE "thirdParty")
+
 target_link_libraries(test1 
 						PRIVATE 
 						asio::asio
 						nlohmann_json::nlohmann_json
+						${OPENSSL_LIBRARIES}
 						)

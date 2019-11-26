@@ -17,6 +17,7 @@ namespace ormpp{
     class dbng{
     public:
     	~dbng(){
+			std::cout << ".........................." << std::endl;
             disconnect();
         }
 	
