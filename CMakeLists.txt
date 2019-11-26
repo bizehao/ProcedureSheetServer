@@ -54,9 +54,17 @@ target_link_directories(ProcedureSheetServer PRIVATE "libs")
 if (WIN32)
     target_link_libraries(ProcedureSheetServer PRIVATE "libmysql")
     # Copy DLL files to output directory
-    add_custom_command(TARGET ProcedureSheetServer POST_BUILD
+	add_custom_command(TARGET ProcedureSheetServer POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${PROJECT_SOURCE_DIR}/libs/libmysql.dll"
+            $<TARGET_FILE_DIR:ProcedureSheetServer>)
+			add_custom_command(TARGET ProcedureSheetServer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/libs/libcrypto-1_1-x64.dll"
+            $<TARGET_FILE_DIR:ProcedureSheetServer>)
+			add_custom_command(TARGET ProcedureSheetServer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/libs/libssl-1_1-x64.dll"
             $<TARGET_FILE_DIR:ProcedureSheetServer>)
 endif ()
 
