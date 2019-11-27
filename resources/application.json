@@ -2,10 +2,10 @@
   "address": "0.0.0.0",
   "port": "8080",
   "database": {
-    "address": "127.0.0.1",
+    "address": "39.105.183.64",
     "user": "root",
     "password": "bzh960912",
-    "db": "procedure-sheet"
+    "db": "procedure_sheet"
   },
   "email": {
     "host": "smtp.163.com",
@@ -13,6 +13,6 @@
     "password": "bzh123456789"
   },
   "resources": {
-    "public_root_directory": "F:/source/repos/ProcedureSheetServer/resources/imgs"
+    "public_root_directory": "../../../resources/imgs/"
   }
 }
